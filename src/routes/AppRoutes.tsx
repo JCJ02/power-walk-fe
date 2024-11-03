@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from "../pages/NotFound";
-import LogIn from "../pages/auth/login/LogIn";
-import SignUp from "../pages/auth/signup/SignUp";
+import LogIn from "../pages/authentication/login/LogIn";
+import SignUp from "../pages/authentication/signup/SignUp";
 
 const AppRoutes = () => {
   return (
