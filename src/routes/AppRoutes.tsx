@@ -7,6 +7,7 @@ import Students from "../pages/students/Students";
 import ChangePassword from "../pages/settings/ChangePassword";
 import EditProfile from "../pages/settings/EditProfile";
 import Admin from "../pages/admin/Admin";
+import Test from "../pages/test/Test";
 
 const AppRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
         <Route path="*" element={<NotFound />} />
         <Route path="/log-in" element={<LogIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/test" element={<Test />} />
         <Route path="/" element={<Admin />}>
           <Route index element={<Dashboard />} />
           <Route path="students" element={<Students />} />
