@@ -1,9 +1,9 @@
 const EditProfile = () => {
-    return (
-        <>
-            Edit Profile
-        </>
-    )
-}
+  return (
+    <>
+      <div className="h-full w-full">Edit Profile</div>
+    </>
+  );
+};
 
-export default EditProfile
+export default EditProfile;

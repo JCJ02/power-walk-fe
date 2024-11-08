@@ -1,9 +1,9 @@
 const ChangePassword = () => {
-    return (
-        <>
-            Change Password
-        </>
-    )
-}
+  return (
+    <>
+      <div className="h-full w-full">Change Password</div>
+    </>
+  );
+};
 
-export default ChangePassword
+export default ChangePassword;
