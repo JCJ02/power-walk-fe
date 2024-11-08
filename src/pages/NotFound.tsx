@@ -1,6 +1,10 @@
+import { useEffect } from "react";
 import Footer from "../layouts/Footer";
 
 const NotFound = () => {
+  useEffect(() => {
+    document.title = "404 NOT FOUND - Power Walk Technology";
+  }, []);
   return (
     <>
       <div className="flex flex-col justify-center items-center px-5 h-screen w-full">
