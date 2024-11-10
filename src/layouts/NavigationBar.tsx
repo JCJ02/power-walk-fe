@@ -7,7 +7,7 @@ const NavigationBar = () => {
       <div className="bg-[#FEFEFE] flex items-center justify-end border-b-2 border-black h-[80px] w-full">
         <div className="flex items-center gap-2 px-5 cursor-pointer">
           <label className="font-poppins text-xs md:text-md lg:text-lg">
-            Welcome, Admin
+            Welcome, <b>Admin</b>
           </label>
           <Picture
             className="rounded-full h-[20px] w-[20px] lg:h-[30px] lg:w-[30px]"
