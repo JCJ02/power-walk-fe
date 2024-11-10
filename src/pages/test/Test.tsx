@@ -1,18 +1,18 @@
 import { useState } from "react";
-import { z } from "zod";
+import { loginSchema, Login } from "../../utils/validations/AdminSchema";
 
 const Test = () => {
 
-    const loginSchema = z.object({
-        email: z.string({
-            required_error: "E-mail Is Required!"
-        }).email("Must Be A Valid E-Mail Address!"),
-        password: z.string({
-            required_error: "Password Is Required!"
-        }).min(8, "Password Must Be At Least 8 Characters Long!")
-    });
+    // const loginSchema = z.object({
+    //     email: z.string({
+    //         required_error: "E-mail Is Required!"
+    //     }).email("Must Be A Valid E-Mail Address!"),
+    //     password: z.string({
+    //         required_error: "Password Is Required!"
+    //     }).min(8, "Password Must Be At Least 8 Characters Long!")
+    // });
 
-    type Login = z.infer<typeof loginSchema>;
+    // type Login = z.infer<typeof loginSchema>;
 
     const defaultValues: Login = {
         email: "",
