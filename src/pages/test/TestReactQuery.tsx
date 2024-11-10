@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios"
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"
 
 // Tranditional Way of FETCHING DATA using FETCH
@@ -11,13 +11,13 @@ import { Link } from "react-router-dom"
 //     return data;
 // }
 
-// FETCHING DATA using AXIOS
-const fetchPosts = async () => {
-    const response = await axios.get("https://jsonplaceholder.typicode.com/posts");
-    const data = response.data;
-    console.log(data);
-    return data;
-}
+// // FETCHING DATA using AXIOS
+// const fetchPosts = async () => {
+//     const response = await axios.get("https://jsonplaceholder.typicode.com/posts");
+//     const data = response.data;
+//     console.log(data);
+//     return data;
+// }
 
 const TestReactQuery = () => {
     // Traditional Way of FETCHING DATA w/useEffect();
