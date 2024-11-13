@@ -6,6 +6,7 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { LogInType, logInSchema } from "../../../utils/validations/AdminSchema";
 import { Bounce, toast } from 'react-toastify';
+import Footer from "../../../layouts/Footer";
 
 const LogIn = () => {
   useEffect(() => {
@@ -99,6 +100,7 @@ const LogIn = () => {
             <Link to={"/sign-up"} className="bg-[#FFFFFF] font-poppins border-2 border-[#2B475B] text-center text-xs md:text-md lg:text-lg rounded-full py-1 hover:bg-[#2B475B] hover:text-white ease-in-out duration-500 w-full">Sign Up</Link>
           </div>
         </form>
+        <Footer />
       </div>
     </div>
   </>;
