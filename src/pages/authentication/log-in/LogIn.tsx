@@ -90,7 +90,7 @@ const LogIn = () => {
           </div>
           <Link to={"*"} className="font-poppins text-xs md:text-md lg:text-lg hover:underline">Forgot Password?</Link>
           <Button
-            className="bg-[#2B475B] border-2 border-[#2B475B] text-white text-xs md:text-md lg:text-lg w-full"
+            className="bg-[#2B475B] text-white text-xs md:text-md lg:text-lg hover:bg-[#335369] w-full"
             onClick={handleLogIn}
           >
             Sign In
