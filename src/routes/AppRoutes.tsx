@@ -7,9 +7,9 @@ import Students from "../pages/students/Students";
 import ChangePassword from "../pages/settings/ChangePassword";
 import EditProfile from "../pages/settings/EditProfile";
 import Admin from "../pages/admin/Admin";
-import Test from "../pages/test/Test";
-import Test1 from "../pages/test/Test1";
-import TestReactQuery from "../pages/test/TestReactQuery";
+import Test from "../pages/__test__/Test";
+import Test1 from "../pages/__test__/Test1";
+import TestReactQuery from "../pages/__test__/TestReactQuery";
 
 const AppRoutes = () => {
   return (
