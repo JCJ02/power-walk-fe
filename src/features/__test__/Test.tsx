@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { loginSchema, Login } from "../../utils/validations/AdminSchema";
+import { logInSchema, LogInType } from "../../utils/validations/AdminSchema";
 
 const Test = () => {
 
@@ -14,12 +14,12 @@ const Test = () => {
 
     // type Login = z.infer<typeof loginSchema>;
 
-    const defaultValues: Login = {
+    const defaultValues: LogInType = {
         email: "",
         password: ""
     }
 
-    const [values, setValues] = useState<Login>(defaultValues);
+    const [values, setValues] = useState<LogInType>(defaultValues);
     const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
     const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +37,7 @@ const Test = () => {
 
         event.preventDefault();
 
-        const result = loginSchema.safeParse(values);
+        const result = logInSchema.safeParse(values);
 
         if (result.error) {
             const errorMessages = result.error.flatten().fieldErrors;

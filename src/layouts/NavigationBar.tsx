@@ -1,4 +1,4 @@
-import Picture from "../components/ui/Picture";
+import Picture from "../components/Picture";
 import AdminPhoto from "../assets/images/Admin-Profile-Vector-PNG-Isolated-HD.png";
 
 const NavigationBar = () => {

@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from "../pages/NotFound";
-import LogIn from "../pages/authentication/log-in/LogIn";
-import SignUp from "../pages/authentication/sign-up/SignUp";
-import Dashboard from "../pages/dashboard/Dashboard";
-import Students from "../pages/students/Students";
-import ChangePassword from "../pages/settings/ChangePassword";
-import EditProfile from "../pages/settings/EditProfile";
-import Admin from "../pages/admin/Admin";
-import Test from "../pages/test/Test";
-import Test1 from "../pages/test/Test1";
-import TestReactQuery from "../pages/test/TestReactQuery";
+import LogIn from "../features/authentication/log-in/LogIn";
+import SignUp from "../features/authentication/sign-up/SignUp";
+import Dashboard from "../features/dashboard/Dashboard";
+import Students from "../features/students/Students";
+import ChangePassword from "../features/settings/ChangePassword";
+import EditProfile from "../features/settings/EditProfile";
+import Admin from "../features/admin/Admin";
+import Test from "../features/__test__/Test";
+import Test1 from "../features/__test__/Test1";
+import TestReactQuery from "../features/__test__/TestReactQuery";
 
 const AppRoutes = () => {
   return (
