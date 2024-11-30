@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import NotFound from "../features/NotFound";
+import NotFound from "../pages/NotFound";
 import LogIn from "../features/authentication/log-in/LogIn";
 import SignUp from "../features/authentication/sign-up/SignUp";
 import Dashboard from "../features/dashboard/Dashboard";
