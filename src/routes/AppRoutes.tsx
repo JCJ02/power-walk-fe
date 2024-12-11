@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from "../pages/NotFound";
 import LogIn from "../features/authentication/log-in/LogIn";
 import SignUp from "../features/authentication/sign-up/SignUp";
-import Dashboard from "../features/dashboard/Dashboard";
-import Students from "../features/students/Students";
+import Dashboard from "../features/admin/dashboard/Dashboard";
+import Students from "../features/admin/students/StudentInformation";
 import ChangePassword from "../features/settings/ChangePassword";
 import EditProfile from "../features/settings/EditProfile";
 import Admin from "../features/admin/Admin";
@@ -23,7 +23,7 @@ const AppRoutes = () => {
         <Route path="/test-react-query" element={<TestReactQuery />} />
         <Route path="/" element={<Admin />}>
           <Route index element={<Dashboard />} />
-          <Route path="students" element={<Students />} />
+          <Route path="student-information" element={<Students />} />
           <Route path="change-password" element={<ChangePassword />} />
           <Route path="edit-profile" element={<EditProfile />} />
         </Route>
