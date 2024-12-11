@@ -4,8 +4,8 @@ import AdminPhoto from "../assets/images/Admin-Profile-Vector-PNG-Isolated-HD.pn
 const NavigationBar = () => {
   return (
     <>
-      <div className="bg-[#FEFEFE] flex items-center justify-end border-b-2 border-black h-[80px] w-full">
-        <div className="flex items-center gap-2 px-5 cursor-pointer">
+      <div className="bg-[#FEFEFE] flex items-center justify-end border-b-[1px] border-black z-0 h-[80px] w-full">
+        <div className="flex items-center gap-2 px-10 cursor-pointer">
           <label className="font-poppins text-xs md:text-md lg:text-lg">
             Welcome, <b>Admin</b>
           </label>
