@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios"
+import axios from "axios";
 // import { useEffect, useState } from "react";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 // Tranditional Way of FETCHING DATA using FETCH
 // const fetchPosts = async () => {
@@ -20,37 +20,39 @@ import { Link } from "react-router-dom"
 // }
 
 const TestReactQuery = () => {
-    // Traditional Way of FETCHING DATA w/useEffect();
-    // const [posts, setPosts] = useState([]);
+  // Traditional Way of FETCHING DATA w/useEffect();
+  // const [posts, setPosts] = useState([]);
 
-    // useEffect(() => {
-    //     const getPosts = async () => {
-    //         const currentPosts = await fetchPosts();
-    //         setPosts(currentPosts);
-    //     }
-    //     getPosts();
-    // }, []);
+  // useEffect(() => {
+  //     const getPosts = async () => {
+  //         const currentPosts = await fetchPosts();
+  //         setPosts(currentPosts);
+  //     }
+  //     getPosts();
+  // }, []);
 
-    // console.log({ posts });
+  // console.log({ posts });
 
-    // FETCHING DATA using React Query
-    const { data, error, isLoading } = useQuery({
-        queryKey: ["posts"],
-        queryFn: async () => {
-            const response = await axios.get("https://jsonplaceholder.typicode.com/posts");
-            return response.data;
-        },
-    });
+  // FETCHING DATA using React Query
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["posts"],
+    queryFn: async () => {
+      const response = await axios.get(
+        "https://jsonplaceholder.typicode.com/posts"
+      );
+      return response.data;
+    },
+  });
 
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>An error occurred: {error.message}</p>;
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>An error occurred: {error.message}</p>;
 
-    console.log(data);
+  console.log(data);
 
-    return (
-        <>
-            {/* Tranditional Way of FETCHING DATA */}
-            {/* <div>
+  return (
+    <>
+      {/* Tranditional Way of FETCHING DATA */}
+      {/* <div>
                 <Link to={"/test-1"}>Go to Test1</Link>
                 <div>
                     {posts.length > 0 ? (
@@ -66,21 +68,22 @@ const TestReactQuery = () => {
                 </div>
             </div> */}
 
-            {/* // FETCHING DATA using React Query */}
-            <div>
-                <Link to={"/test-1"}>Go to Test1</Link>
-                <div>
-                    <h2>Posts</h2>
-                    {data && data.map((post: any) => (
-                        <div key={post.id}>
-                            <h1>Title: {post.title}</h1>
-                            <p>Description: {post.body}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </>
-    )
-}
+      {/* // FETCHING DATA using React Query */}
+      <div>
+        <Link to={"/test-1"}>Go to Test1</Link>
+        <div>
+          <h2>Posts</h2>
+          {data &&
+            data.map((post: any) => (
+              <div key={post.id}>
+                <h1>Title: {post.title}</h1>
+                <p>Description: {post.body}</p>
+              </div>
+            ))}
+        </div>
+      </div>
+    </>
+  );
+};
 
-export default TestReactQuery
+export default TestReactQuery;
