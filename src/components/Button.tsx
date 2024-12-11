@@ -1,5 +1,7 @@
+import { cn } from "../lib/utils";
+
 type buttonType = {
-  children: string;
+  children: any;
   className?: string;
   onClick?: any;
 };
@@ -8,7 +10,10 @@ const Button = ({ children, className, onClick }: buttonType) => {
   return (
     <>
       <button
-        className={`${className} font-poppins border-2 border-[#2B475B] text-xs md:text-sm lg:text-lg py-1 px-5 rounded-full`}
+        className={cn(
+          "font-poppins border-2 border-[#2B475B] text-xs md:text-md 2xl:text-lg py-2 px-5 rounded-full",
+          className
+        )}
         onClick={onClick}
       >
         {children}
