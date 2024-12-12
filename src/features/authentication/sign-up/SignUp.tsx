@@ -11,8 +11,7 @@ import useSignUpForm from "./hooks/useSignUpForm";
 import { IoPerson } from "react-icons/io5";
 
 const SignUp = () => {
-  const { values, setValues, errors, setErrors, handleChange, validateForm } =
-    useSignUpForm();
+  const { values, errors, handleChange, validateForm } = useSignUpForm();
 
   const handleSignUp = (event: React.FormEvent) => {
     event.preventDefault();
