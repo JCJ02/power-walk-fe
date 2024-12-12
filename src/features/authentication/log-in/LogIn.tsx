@@ -10,10 +10,9 @@ import Logo from "../../../components/Logo";
 import useLogInForm from "./hooks/useLogInForm";
 
 const LogIn = () => {
-  const { values, setValues, errors, setErrors, handleChange, validateForm } =
-    useLogInForm();
+  const { values, errors, handleChange, validateForm } = useLogInForm();
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage] = useState("");
 
   const handleLogIn = (event: React.FormEvent) => {
     event.preventDefault();

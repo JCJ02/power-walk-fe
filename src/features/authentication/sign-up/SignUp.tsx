@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Footer from "../../../layouts/Footer";
 import { Link } from "react-router-dom";
 import Button from "../../../components/Button";
