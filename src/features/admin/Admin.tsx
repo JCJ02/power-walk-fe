@@ -7,7 +7,7 @@ const Admin = () => {
     <>
       <div className="flex">
         <SideNavigationBar />
-        <div className="flex flex-col h-screen w-full">
+        <div className="flex flex-col h-screen w-10/12 md:w-11/12">
           <NavigationBar />
           <Outlet />
         </div>
