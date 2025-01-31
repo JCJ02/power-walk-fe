@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Input } from "../../../../components/ui/input";
 import Button from "../../../../components/Button";
-import useNewStudent from "../hooks/useNewStudent";
+import useNewStudentForm from "../hooks/useNewStudentForm";
 import { useNavigate } from "react-router-dom";
 import { Bounce, toast } from "react-toastify";
 
@@ -12,7 +12,7 @@ type NewStudentFormProps = {
 const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
   const navigate = useNavigate();
   const { values, setValues, errors, setErrors, handleChange, validateForm } =
-    useNewStudent();
+    useNewStudentForm();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
