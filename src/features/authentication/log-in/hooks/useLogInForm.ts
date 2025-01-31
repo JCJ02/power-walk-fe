@@ -29,7 +29,7 @@ const useLogInForm = () => {
         setErrors({});
         setValues(defaultValues);
         return true;
-      };
+    };
 
     return {
         values,

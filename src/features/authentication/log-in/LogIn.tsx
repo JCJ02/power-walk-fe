@@ -8,8 +8,10 @@ import { Bounce, toast } from "react-toastify";
 import Footer from "../../../layouts/Footer";
 import Logo from "../../../components/Logo";
 import useLogInForm from "./hooks/useLogInForm";
+import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
+  const navigate = useNavigate();
   const { values, errors, handleChange, validateForm } = useLogInForm();
 
   const [errorMessage] = useState("");
@@ -30,6 +32,7 @@ const LogIn = () => {
         theme: "light",
         transition: Bounce,
       });
+      navigate("/");
     }
   };
 
@@ -88,7 +91,7 @@ const LogIn = () => {
               )}
             </div>
             <Button
-              className="bg-[#2B475B] text-white text-xs md:text-md 2xl:text-lg hover:bg-[#335369] w-full"
+              className="bg-[#2B475B] hover:bg-[#335369] w-full"
               onClick={handleLogIn}
             >
               Sign In
