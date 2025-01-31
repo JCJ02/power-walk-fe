@@ -1,15 +1,15 @@
 import { useEffect } from "react";
-import Button from "../../../../components/Button";
 import { Input } from "../../../../components/ui/input";
+import Button from "../../../../components/Button";
 import useNewStudent from "../hooks/useNewStudent";
-import { Bounce, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { Bounce, toast } from "react-toastify";
 
-type UpdateStudentFormProps = {
+type NewStudentFormProps = {
   closeForm?: () => void;
 };
 
-const UpdateStudentForm = ({ closeForm }: UpdateStudentFormProps) => {
+const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
   const navigate = useNavigate();
   const { values, setValues, errors, setErrors, handleChange, validateForm } =
     useNewStudent();
@@ -33,13 +33,14 @@ const UpdateStudentForm = ({ closeForm }: UpdateStudentFormProps) => {
       navigate("/");
     }
   };
+
   useEffect(() => {
-    document.title = "Update Student - Power Walk Technology";
+    document.title = "Create Student - Power Walk Technology";
   });
   return (
     <>
       <div className="flex flex-col items-start gap-5 bg-white font-poppins px-8 py-10 w-full">
-        <h1 className="text-xl font-semibold">Edit Student</h1>
+        <h1 className="text-xl font-semibold">New Student</h1>
         <div className="flex flex-col items-center gap-2 w-full">
           {/* 1ST FIELDS */}
           <div className="flex items-start gap-2 w-full">
@@ -175,4 +176,4 @@ const UpdateStudentForm = ({ closeForm }: UpdateStudentFormProps) => {
   );
 };
 
-export default UpdateStudentForm;
+export default NewStudentForm;
