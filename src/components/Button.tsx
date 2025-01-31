@@ -11,7 +11,7 @@ const Button = ({ children, className, onClick }: buttonType) => {
     <>
       <button
         className={cn(
-          "font-poppins border-2 border-[#2B475B] text-xs md:text-md 2xl:text-lg py-2 px-5 rounded-full",
+          "bg-[#385A65] font-poppins text-xs md:text-md lg:text-lg text-white py-2 px-5 rounded-full cursor-pointer",
           className
         )}
         onClick={onClick}
