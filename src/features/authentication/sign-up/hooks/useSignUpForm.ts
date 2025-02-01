@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { signUpSchema, SignUpType } from "../../../../utils/validations/AdminSchema";
+import { createAdminSchema, SignUpType } from "../../../../utils/zod/AdminSchema";
 
 type useSignUpFormTypes = {
     firstname?: string,
     lastname?: string,
     email?: string,
     password?: string
+    confirmPassword?: string
 }
 
 const useSignUpForm = () => {
@@ -14,6 +15,7 @@ const useSignUpForm = () => {
         lastname: "",
         email: "",
         password: "",
+        confirmPassword: ""
     };
 
     const [values, setValues] = useState<SignUpType>(defaultValues);
@@ -25,7 +27,7 @@ const useSignUpForm = () => {
     };
 
     const validateForm = () => {
-        const result = signUpSchema.safeParse(values);
+        const result = createAdminSchema.safeParse(values);
 
         if (result.error) {
         const errorMessages = result.error.flatten().fieldErrors;
@@ -34,6 +36,7 @@ const useSignUpForm = () => {
                 lastname: errorMessages.lastname?.[0],
                 email: errorMessages.email?.[0],
                 password: errorMessages.password?.[0],
+                confirmPassword: errorMessages.confirmPassword?.[0]
             });
             return false;
         } else {

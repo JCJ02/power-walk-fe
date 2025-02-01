@@ -9,6 +9,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import Logo from "../../../components/Logo";
 import useSignUpForm from "./hooks/useSignUpForm";
 import { IoPerson } from "react-icons/io5";
+import { Input } from "../../../components/ui/input";
 
 const SignUp = () => {
   const { values, errors, handleChange, validateForm } = useSignUpForm();
@@ -49,9 +50,9 @@ const SignUp = () => {
             </h1>
             <div className="flex flex-col items-center gap-2 w-full">
               <div className="relative flex items-center w-full">
-                <IoPerson className="absolute text-2xl text-[#2B475B] mx-4" />
-                <input
-                  className="border-2 border-[#2B475B] rounded-lg font-poppins text-xs md:text-md 2xl:text-lg py-2 pl-12 w-full"
+                <IoPerson className="absolute text-lg text-[#2B475B] mx-4" />
+                <Input
+                  className="border-2 border-[#2B475B] rounded-md font-poppins pl-12"
                   placeholder="Firstname"
                   name="firstname"
                   value={values.firstname}
@@ -64,9 +65,9 @@ const SignUp = () => {
                 </p>
               )}
               <div className="relative flex items-center w-full">
-                <IoPerson className="absolute text-2xl text-[#2B475B] mx-4" />
-                <input
-                  className="border-2 border-[#2B475B] rounded-lg font-poppins text-xs md:text-md 2xl:text-lg py-2 pl-12 w-full"
+                <IoPerson className="absolute text-lg text-[#2B475B] mx-4" />
+                <Input
+                  className="border-2 border-[#2B475B] rounded-md font-poppins pl-12"
                   placeholder="Lastname"
                   name="lastname"
                   value={values.lastname}
@@ -79,9 +80,9 @@ const SignUp = () => {
                 </p>
               )}
               <div className="relative flex items-center w-full">
-                <MdEmail className="absolute text-2xl text-[#2B475B] mx-4" />
-                <input
-                  className="border-2 border-[#2B475B] rounded-lg font-poppins text-xs md:text-md 2xl:text-lg py-2 pl-12 w-full"
+                <MdEmail className="absolute text-lg text-[#2B475B] mx-4" />
+                <Input
+                  className="border-2 border-[#2B475B] rounded-md font-poppins pl-12"
                   placeholder="E-mail Address"
                   name="email"
                   value={values.email}
@@ -95,8 +96,8 @@ const SignUp = () => {
               )}
               <div className="relative flex items-center w-full">
                 <RiLockPasswordFill className="absolute text-2xl text-[#2B475B] mx-4" />
-                <input
-                  className="border-2 border-[#2B475B] rounded-lg font-poppins text-xs md:text-md 2xl:text-lg py-2 pl-12 w-full"
+                <Input
+                  className="border-2 border-[#2B475B] rounded-md font-poppins pl-12"
                   type="password"
                   placeholder="Password"
                   name="password"
@@ -107,6 +108,22 @@ const SignUp = () => {
               {errors.password && (
                 <p className="font-poppins self-start text-xs md:text-md text-red-700">
                   {errors.password}
+                </p>
+              )}
+              <div className="relative flex items-center w-full">
+                <RiLockPasswordFill className="absolute text-2xl text-[#2B475B] mx-4" />
+                <Input
+                  className="border-2 border-[#2B475B] rounded-md font-poppins pl-12"
+                  type="password"
+                  placeholder="Confirm Password"
+                  name="confirmPassword"
+                  value={values.confirmPassword ?? ""}
+                  onChange={handleChange}
+                />
+              </div>
+              {errors.confirmPassword && (
+                <p className="font-poppins self-start text-xs md:text-md text-red-700">
+                  {errors.confirmPassword}
                 </p>
               )}
             </div>
