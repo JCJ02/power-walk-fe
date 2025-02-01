@@ -20,9 +20,11 @@ const SideNavigationBar = () => {
   const location = useLocation();
   const [isMobileView, setDesktopView] = useState(false);
 
-  const handleLogOut = () => {
-    toast.success("Successfully Logged Out!", {
-      toastId: "successfullyLoggedOut",
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("admin");
+    toast.success("Logged Out Successfully!", {
+      toastId: "loggedOutSuccess",
       position: "top-right",
       autoClose: 1500,
       hideProgressBar: false,
@@ -143,7 +145,7 @@ const SideNavigationBar = () => {
               <TooltipTrigger>
                 <Button
                   className="flex justify-center xl:justify-start items-center gap-2 text-[#385A65] bg-white hover:bg-[#385A65] hover:text-white py-3 xl:pl-2 border-0 rounded-md cursor-pointer w-full"
-                  onClick={handleLogOut}
+                  onClick={handleLogout}
                 >
                   {isMobileView ? (
                     <IoLogOut className="text-2xl cursor-pointer" />
