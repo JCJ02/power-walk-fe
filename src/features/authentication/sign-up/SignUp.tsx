@@ -1,8 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Footer from "../../../layouts/Footer";
 import { Link } from "react-router-dom";
 import Button from "../../../components/Button";
-import { Bounce, toast } from "react-toastify";
 import backgroundImage from "../../../assets/images/power-walk-bg.jpg";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -10,25 +9,30 @@ import Logo from "../../../components/Logo";
 import useSignUpForm from "./hooks/useSignUpForm";
 import { IoPerson } from "react-icons/io5";
 import { Input } from "../../../components/ui/input";
+import useSignUpMutation from "./hooks/useSignUpMutation";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const [errorMessage, setErrorMessage] = useState("");
+
   const { values, errors, handleChange, validateForm } = useSignUpForm();
+  const signUpAdminMutation = useSignUpMutation();
+  const navigate = useNavigate();
 
   const handleSignUp = (event: React.FormEvent) => {
     event.preventDefault();
 
     if (validateForm()) {
-      toast.success("Successfully Signed Up!", {
-        toastId: "successfullySignedUp",
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
+      signUpAdminMutation.mutate(values, {
+        onSuccess: () => {
+          navigate("/log-in");
+        },
+        onError: (error) => {
+          console.error("Registration Error:", error);
+          const message =
+            "Oops! Something went wrong with your registration. Please double-check your information and try again.";
+          setErrorMessage(message);
+        },
       });
     }
   };
@@ -44,7 +48,10 @@ const SignUp = () => {
         />
         <div className="bg-[#FFFFFF] flex flex-col justify-center lg:justify-start xl:justify-center items-center gap-5 p-10 md:py-10 xl:py-20 2xl:px-36 overflow-y-scroll h-screen w-full">
           <Logo />
-          <form className="flex flex-col items-center gap-4 w-full md:w-2/5 lg:w-full">
+          <form
+            className="flex flex-col items-center gap-4 w-full md:w-2/5 lg:w-full"
+            onSubmit={handleSignUp}
+          >
             <h1 className="font-poppins font-bold text-md md:text-lg 2xl:text-xl">
               Sign Up
             </h1>
@@ -127,15 +134,20 @@ const SignUp = () => {
                 </p>
               )}
             </div>
+            {errorMessage && (
+              <p className="font-poppins text-red-700 text-xs md:text-md w-full">
+                {errorMessage}
+              </p>
+            )}
             <Button
-              className="bg-[#2B475B] text-white text-xs md:text-md 2xl:text-lg hover:bg-[#335369] w-full"
+              className="bg-[#2B475B] text-white text-xs md:text-md hover:bg-[#335369] w-full"
               onClick={handleSignUp}
             >
               Sign Up
             </Button>
             <Link
               to={"/log-in"}
-              className="font-poppins font-semibold text-xs md:text-md 2xl:text-lg text-[#335369] hover:underline"
+              className="font-poppins font-semibold text-xs md:text-md lg:text-lg text-[#335369] hover:underline"
             >
               Sign In
             </Link>
