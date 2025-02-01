@@ -4,36 +4,38 @@ import { Link } from "react-router-dom";
 import backgroundImage from "../../../assets/images/power-walk-bg.jpg";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
-import { Bounce, toast } from "react-toastify";
 import Footer from "../../../layouts/Footer";
 import Logo from "../../../components/Logo";
 import useLogInForm from "./hooks/useLogInForm";
-import { useNavigate } from "react-router-dom";
 import { Input } from "../../../components/ui/input";
+import useLoginMutation from "./hooks/useLogInMutation";
 
 const LogIn = () => {
-  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
   const { values, errors, handleChange, validateForm } = useLogInForm();
-
-  const [errorMessage] = useState("");
+  const loginMutation = useLoginMutation();
 
   const handleLogIn = (event: React.FormEvent) => {
     event.preventDefault();
 
     if (validateForm()) {
-      toast.success("Successfully Signed In!", {
-        toastId: "successfullySignedIn",
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
+      loginMutation.mutate(values, {
+        // onSuccess: () => {
+        //   // setLoading(false);
+        //   // updateRememberPasswordData("email", values.email);
+        //   // updateRememberPasswordData("password", values.password);
+        //   // updateRememberPasswordData(
+        //   //   "rememberMe",
+        //   //   rememberPasswordData.rememberMe
+        //   // );
+        // },
+        onError: () => {
+          // setLoading(false);
+          const message =
+            "Oops, Invalid Crendentials! Please Check Your Credentials!";
+          setErrorMessage(message);
+        },
       });
-      navigate("/");
     }
   };
 
@@ -49,7 +51,10 @@ const LogIn = () => {
         />
         <div className="bg-[#FFFFFF] flex flex-col justify-center lg:justify-start xl:justify-center items-center gap-5 px-10 md:py-10 xl:py-20 2xl:py-0 2xl:px-36 h-screen w-full">
           <Logo />
-          <form className="flex flex-col items-center gap-5 w-full md:w-2/5 lg:w-full">
+          <form
+            className="flex flex-col items-center gap-5 w-full md:w-2/5 lg:w-full"
+            onSubmit={handleLogIn}
+          >
             <div className="flex flex-col items-center">
               <h1 className="font-poppins font-bold text-md md:text-lg 2xl:text-xl">
                 Welcome Admin!
