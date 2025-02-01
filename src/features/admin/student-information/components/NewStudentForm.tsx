@@ -11,8 +11,14 @@ type NewStudentFormProps = {
 
 const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
   const navigate = useNavigate();
-  const { values, setValues, errors, setErrors, handleChange, validateForm } =
-    useNewStudentForm();
+  const {
+    values,
+    // setValues,
+    errors,
+    // setErrors,
+    handleChange,
+    validateForm,
+  } = useNewStudentForm();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
