@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { studentSchema, StudentType } from "../../../../utils/validations/StudentSchema";
+import { studentSchema, StudentType } from "../../../../utils/zod/StudentSchema";
 
 const useNewStudentForm = () => {
     const defaultValues: StudentType = {

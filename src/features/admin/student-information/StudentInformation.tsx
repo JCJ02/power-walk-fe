@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../../components/ui/table";
-import { StudentInformationData } from "../../../data/studentInformationData";
+import { StudentInformationData } from "../../../data/StudentInformationData";
 import { FaEye } from "react-icons/fa6";
 import { MdEditSquare } from "react-icons/md";
 import { RiDeleteBin6Fill } from "react-icons/ri";
