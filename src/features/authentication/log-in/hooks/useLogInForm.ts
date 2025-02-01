@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { logInSchema, LogInType } from "../../../../utils/validations/AdminSchema";
+import { authenticateAdminSchema, LogInType } from "../../../../utils/zod/AdminSchema";
 
 const useLogInForm = () => {
     const defaultValues: LogInType = {
@@ -16,7 +16,7 @@ const useLogInForm = () => {
     };
 
     const validateForm = () => {
-        const result = logInSchema.safeParse(values);
+        const result = authenticateAdminSchema.safeParse(values);
         
         if (result.error) {
           const errorMessages = result.error.flatten().fieldErrors;

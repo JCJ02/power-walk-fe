@@ -9,6 +9,7 @@ import Footer from "../../../layouts/Footer";
 import Logo from "../../../components/Logo";
 import useLogInForm from "./hooks/useLogInForm";
 import { useNavigate } from "react-router-dom";
+import { Input } from "../../../components/ui/input";
 
 const LogIn = () => {
   const navigate = useNavigate();
@@ -59,9 +60,9 @@ const LogIn = () => {
             </div>
             <div className="flex flex-col items-center gap-2 w-full">
               <div className="relative flex items-center w-full">
-                <MdEmail className="absolute text-2xl text-[#2B475B] mx-4" />
-                <input
-                  className="border-2 border-[#2B475B] rounded-lg font-poppins text-xs md:text-md 2xl:text-lg py-2 pl-12 w-full"
+                <MdEmail className="absolute text-lg text-[#2B475B] mx-4" />
+                <Input
+                  className="border-2 border-[#2B475B] rounded-lg font-poppins pl-12 w-full"
                   placeholder="E-mail Address"
                   name="email"
                   value={values.email}
@@ -74,9 +75,9 @@ const LogIn = () => {
                 </p>
               )}
               <div className="relative flex items-center w-full">
-                <RiLockPasswordFill className="absolute text-2xl text-[#2B475B] mx-4" />
-                <input
-                  className="border-2 border-[#2B475B] rounded-lg font-poppins text-xs md:text-md 2xl:text-lg py-2 pl-12 w-full"
+                <RiLockPasswordFill className="absolute text-lg text-[#2B475B] mx-4" />
+                <Input
+                  className="border-2 border-[#2B475B] rounded-lg font-poppins pl-12 w-full"
                   type="password"
                   placeholder="Password"
                   name="password"
