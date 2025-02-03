@@ -4,9 +4,17 @@ type buttonType = {
   children: any;
   className?: string;
   onClick?: any;
+  disabled?: any;
+  type?: any;
 };
 
-const Button = ({ children, className, onClick }: buttonType) => {
+const Button = ({
+  children,
+  className,
+  onClick,
+  disabled,
+  type,
+}: buttonType) => {
   return (
     <>
       <button
@@ -15,6 +23,8 @@ const Button = ({ children, className, onClick }: buttonType) => {
           className
         )}
         onClick={onClick}
+        disabled={disabled}
+        type={type}
       >
         {children}
       </button>
