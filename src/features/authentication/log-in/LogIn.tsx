@@ -9,28 +9,31 @@ import Logo from "../../../components/Logo";
 import useLogInForm from "./hooks/useLogInForm";
 import { Input } from "../../../components/ui/input";
 import useLoginMutation from "./hooks/useLogInMutation";
+import MoonLoader from "react-spinners/MoonLoader";
+import { IoEyeOffSharp, IoEyeSharp } from "react-icons/io5";
 
 const LogIn = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const { values, errors, handleChange, validateForm } = useLogInForm();
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const loginMutation = useLoginMutation();
+
+  const togglePasswordVisibility = (event: React.FormEvent) => {
+    event.preventDefault();
+    setShowPassword((type) => !type);
+  };
 
   const handleLogIn = (event: React.FormEvent) => {
     event.preventDefault();
-
+    setLoading(true);
     if (validateForm()) {
       loginMutation.mutate(values, {
-        // onSuccess: () => {
-        //   // setLoading(false);
-        //   // updateRememberPasswordData("email", values.email);
-        //   // updateRememberPasswordData("password", values.password);
-        //   // updateRememberPasswordData(
-        //   //   "rememberMe",
-        //   //   rememberPasswordData.rememberMe
-        //   // );
-        // },
+        onSuccess: () => {
+          setLoading(false);
+        },
         onError: () => {
-          // setLoading(false);
+          setLoading(false);
           const message =
             "Oops, Invalid Crendentials! Please Check Your Credentials!";
           setErrorMessage(message);
@@ -83,30 +86,47 @@ const LogIn = () => {
                 <RiLockPasswordFill className="absolute text-lg text-[#2B475B] mx-4" />
                 <Input
                   className="border-2 border-[#2B475B] rounded-lg font-poppins pl-12 w-full"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   name="password"
                   value={values.password}
                   onChange={handleChange}
                 />
+                <button
+                  className="absolute right-0 px-3 text-xl text-[#2B475B]"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <IoEyeSharp /> : <IoEyeOffSharp />}
+                </button>
               </div>
               {errors.password && (
                 <p className="font-poppins self-start text-xs md:text-md text-red-700">
                   {errors.password}
                 </p>
               )}
+              {errorMessage && (
+                <p className="font-poppins text-red-700 text-xs md:text-md w-full">
+                  {errorMessage}
+                </p>
+              )}
             </div>
             <Button
-              className="bg-[#2B475B] hover:bg-[#335369] w-full"
+              className={`${
+                loading ? "bg-[#335369]" : "bg-[#2B475B]"
+              } bg-[#2B475B] hover:bg-[#335369] w-full`}
+              type="submit"
               onClick={handleLogIn}
+              disabled={loading}
             >
-              Sign In
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <MoonLoader color="#FFFFFF" size={15} speedMultiplier={0.5} />
+                  Signing In...
+                </span>
+              ) : (
+                "Sign In"
+              )}
             </Button>
-            {errorMessage && (
-              <p className="font-poppins text-red-700 text-xs md:text-md w-[250px]">
-                {errorMessage}
-              </p>
-            )}
             <div className="flex justify-center items-center gap-10 w-full">
               <p className="font-poppins text-xs md:text-md 2xl:text-lg">
                 Don't have an account?

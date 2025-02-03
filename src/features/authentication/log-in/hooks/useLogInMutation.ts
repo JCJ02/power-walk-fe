@@ -45,6 +45,7 @@ const useLoginMutation = () => {
       });
       if(!authenticationToken) {
         setAuthenticationToken(data.data.token);
+        console.log(localStorage.getItem("token"));
       } else {
         console.log(`Token is already Set: ${authenticationToken}`);
       }
