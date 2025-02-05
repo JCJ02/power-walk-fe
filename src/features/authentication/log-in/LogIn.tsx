@@ -92,12 +92,12 @@ const LogIn = () => {
                   value={values.password}
                   onChange={handleChange}
                 />
-                <button
-                  className="absolute right-0 px-3 text-xl text-[#2B475B]"
+                <Button
+                  className="bg-transparent absolute right-0 py-0 px-3 text-xl text-[#2B475B]"
                   onClick={togglePasswordVisibility}
                 >
                   {showPassword ? <IoEyeSharp /> : <IoEyeOffSharp />}
-                </button>
+                </Button>
               </div>
               {errors.password && (
                 <p className="font-poppins self-start text-xs md:text-md text-red-700">

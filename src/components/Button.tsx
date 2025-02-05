@@ -4,8 +4,8 @@ type buttonType = {
   children: any;
   className?: string;
   onClick?: any;
-  disabled?: any;
-  type?: any;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 };
 
 const Button = ({

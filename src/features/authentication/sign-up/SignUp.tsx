@@ -7,17 +7,29 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Logo from "../../../components/Logo";
 import useSignUpForm from "./hooks/useSignUpForm";
-import { IoPerson } from "react-icons/io5";
+import { IoEyeOffSharp, IoEyeSharp, IoPerson } from "react-icons/io5";
 import { Input } from "../../../components/ui/input";
 import useSignUpMutation from "./hooks/useSignUpMutation";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const { values, errors, handleChange, validateForm } = useSignUpForm();
   const signUpAdminMutation = useSignUpMutation();
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = (event: React.FormEvent) => {
+    event.preventDefault();
+    setShowPassword((type) => !type);
+  };
+
+  const toggleConfirmPasswordVisibility = (event: React.FormEvent) => {
+    event.preventDefault();
+    setShowConfirmPassword((type) => !type);
+  };
 
   const handleSignUp = (event: React.FormEvent) => {
     event.preventDefault();
@@ -105,12 +117,18 @@ const SignUp = () => {
                 <RiLockPasswordFill className="absolute text-2xl text-[#2B475B] mx-4" />
                 <Input
                   className="border-2 border-[#2B475B] rounded-md font-poppins pl-12"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   name="password"
                   value={values.password}
                   onChange={handleChange}
                 />
+                <Button
+                  className="bg-transparent absolute right-0 py-0 px-3 text-xl text-[#2B475B]"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <IoEyeSharp /> : <IoEyeOffSharp />}
+                </Button>
               </div>
               {errors.password && (
                 <p className="font-poppins self-start text-xs md:text-md text-red-700">
@@ -121,12 +139,18 @@ const SignUp = () => {
                 <RiLockPasswordFill className="absolute text-2xl text-[#2B475B] mx-4" />
                 <Input
                   className="border-2 border-[#2B475B] rounded-md font-poppins pl-12"
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm Password"
                   name="confirmPassword"
                   value={values.confirmPassword ?? ""}
                   onChange={handleChange}
                 />
+                <Button
+                  className="bg-transparent absolute right-0 py-0 px-3 text-xl text-[#2B475B]"
+                  onClick={toggleConfirmPasswordVisibility}
+                >
+                  {showConfirmPassword ? <IoEyeSharp /> : <IoEyeOffSharp />}
+                </Button>
               </div>
               {errors.confirmPassword && (
                 <p className="font-poppins self-start text-xs md:text-md text-red-700">
