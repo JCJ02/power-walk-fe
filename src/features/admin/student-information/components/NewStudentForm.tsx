@@ -1,43 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../../../../components/ui/input";
 import Button from "../../../../components/Button";
 import useNewStudentForm from "../hooks/useNewStudentForm";
-import { useNavigate } from "react-router-dom";
-import { Bounce, toast } from "react-toastify";
+import useNewStudentMutation from "../hooks/useNewStudentMutation";
 
 type NewStudentFormProps = {
   closeForm?: () => void;
 };
 
 const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
-  const navigate = useNavigate();
-  const {
-    values,
-    // setValues,
-    errors,
-    // setErrors,
-    handleChange,
-    validateForm,
-  } = useNewStudentForm();
+  const [errorMessage, setErrorMessage] = useState("");
+  const { values, errors, handleChange, validateForm } = useNewStudentForm();
+  const newStudentMutation = useNewStudentMutation();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
+    // console.log("Submitting Data:", values);
     if (validateForm()) {
-      toast.success("Successfully Signed In!", {
-        toastId: "successfullySignedIn",
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
+      newStudentMutation.mutate(values, {
+        onSuccess: () => {
+          // console.log("Form is Valid");
+          if (closeForm) closeForm();
+        },
+        onError: () => {
+          const message =
+            "Oops, Invalid Crendentials! Please Check Your Credentials!";
+          setErrorMessage(message);
+        },
       });
-      navigate("/");
     }
+    // else {
+    //   console.log("Form is Invalid");
+    // }
   };
 
   useEffect(() => {
@@ -45,23 +39,34 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
   });
   return (
     <>
-      <div className="flex flex-col items-start gap-5 bg-white font-poppins px-8 py-10 w-full">
+      <form
+        className="flex flex-col items-start gap-5 bg-white font-poppins px-8 py-10 w-full"
+        onSubmit={handleSubmit}
+      >
         <h1 className="text-xl font-semibold">New Student</h1>
         <div className="flex flex-col items-center gap-2 w-full">
           {/* 1ST FIELDS */}
           <div className="flex items-start gap-2 w-full">
             <div className="flex flex-col items-start w-full">
-              <label className="text-sm md:text-md">
+              <label className="text-xs md:text-md lg:text-lg">
                 RFID Number<b className="text-red-700">*</b>
               </label>
-              <Input placeholder="RFID Number" />
+              <Input
+                className={"text-xs md:text-md lg:text-lg"}
+                placeholder="RFID Number"
+                name="uid"
+                value={values.uid}
+                onChange={handleChange}
+              />
             </div>
             <div className="flex flex-col items-start w-full">
-              <label className="text-sm md:text-md">
+              <label className="text-xs md:text-md lg:text-lg">
                 Student ID<b className="text-red-700">*</b>
               </label>
               <Input
+                className={"text-xs md:text-md lg:text-lg"}
                 placeholder="Student ID"
+                name="studentId"
                 value={values.studentId}
                 onChange={handleChange}
               />
@@ -76,10 +81,28 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
           {/* 2ND FIELDS */}
           <div className="flex items-start gap-2 w-full">
             <div className="flex flex-col items-start w-full">
-              <label className="text-sm md:text-md">
+              <label className="text-xs md:text-md lg:text-lg">
+                Firstname<b className="text-red-700">*</b>
+              </label>
+              <Input
+                className={"text-xs md:text-md lg:text-lg"}
+                placeholder="Firstname"
+                name="firstname"
+                value={values.firstname}
+                onChange={handleChange}
+              />
+              {errors.firstname && (
+                <p className="font-poppins self-start text-xs md:text-md text-red-700">
+                  {errors.firstname}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col items-start w-full">
+              <label className="text-xs md:text-md lg:text-lg">
                 Lastname<b className="text-red-700">*</b>
               </label>
               <Input
+                className={"text-xs md:text-md lg:text-lg"}
                 placeholder="Lastname"
                 name="lastname"
                 value={values.lastname}
@@ -92,52 +115,51 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
               )}
             </div>
             <div className="flex flex-col items-start w-full">
-              <label className="text-sm md:text-md">
-                Firstname<b className="text-red-700">*</b>
+              <label className="text-xs md:text-md lg:text-lg">
+                Middlename
               </label>
               <Input
-                placeholder="Firstname"
-                value={values.firstname}
+                className={"text-xs md:text-md lg:text-lg"}
+                placeholder="Middlename"
+                name="middlename"
+                value={values.middlename ?? ""}
                 onChange={handleChange}
               />
-              {errors.firstname && (
-                <p className="font-poppins self-start text-xs md:text-md text-red-700">
-                  {errors.firstname}
-                </p>
-              )}
-            </div>
-            <div className="flex flex-col items-start w-full">
-              <label className="text-sm md:text-md">Middlename</label>
-              <Input placeholder="Middlename" />
             </div>
           </div>
 
           {/* 3RD FIELDS */}
           <div className="flex items-start gap-2 w-full">
             <div className="flex flex-col items-start w-full">
-              <label className="text-sm md:text-md">
+              <label className="text-xs md:text-md lg:text-lg">
                 Email Address<b className="text-red-700">*</b>
               </label>
               <Input
+                className={"text-xs md:text-md lg:text-lg"}
                 placeholder="Email Address"
-                name="emailAddress"
-                value={values.emailAddress}
+                name="email"
+                value={values.email}
                 onChange={handleChange}
               />
-              {errors.emailAddress && (
+              {errors.email && (
                 <p className="font-poppins self-start text-xs md:text-md text-red-700">
-                  {errors.emailAddress}
+                  {errors.email}
                 </p>
               )}
             </div>
             <div className="flex flex-col items-start w-full">
-              <label className="text-sm md:text-md">
+              <label className="text-xs md:text-md lg:text-lg">
                 Date Of Birth<b className="text-red-700">*</b>
               </label>
-              <input
+              <Input
+                className="text-xs md:text-md lg:text-lg py-1 px-2 border-2 rounded-md border-[#EEEEEE] w-full"
                 type="date"
-                className="text-sm md:text-md py-1 px-2 border-2 rounded-md border-[#EEEEEE] w-full"
-                value={values.dateOfBirth}
+                name="dateOfBirth"
+                value={
+                  values.dateOfBirth
+                    ? new Date(values.dateOfBirth).toISOString().split("T")[0]
+                    : ""
+                }
                 onChange={handleChange}
               />
               {errors.dateOfBirth && (
@@ -148,11 +170,13 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
             </div>
           </div>
           <div className="flex flex-col items-start w-full">
-            <label className="text-sm md:text-md">
+            <label className="text-xs md:text-md lg:text-lg">
               Address<b className="text-red-700">*</b>
             </label>
             <Input
+              className={"text-xs md:text-md lg:text-lg"}
               placeholder="Address"
+              name="address"
               value={values.address}
               onChange={handleChange}
             />
@@ -162,22 +186,24 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
               </p>
             )}
           </div>
+          {errorMessage && (
+            <p className="font-poppins text-red-700 text-xs md:text-md w-full">
+              {`Error Message: ${errorMessage}`}
+            </p>
+          )}
         </div>
         <div className="flex self-end items-center pt-5 gap-2">
           <Button
-            className="bg-white lg:text-sm text-[#385A65] px-5 md:px-10 rounded-md border-[1px] border-white hover:border-[1px] hover:border-[#385A65]"
+            className="bg-white text-[#385A65] px-5 md:px-10 rounded-md border-[1px] border-white hover:border-[1px] hover:border-[#385A65]"
             onClick={closeForm}
           >
             Cancel
           </Button>
-          <Button
-            className="lg:text-sm px-5 md:px-10 rounded-md"
-            onClick={handleSubmit}
-          >
+          <Button className="px-5 md:px-10 rounded-md" type="submit">
             Submit
           </Button>
         </div>
-      </div>
+      </form>
     </>
   );
 };

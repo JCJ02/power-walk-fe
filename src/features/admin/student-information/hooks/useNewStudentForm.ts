@@ -1,24 +1,26 @@
 import { useState } from "react";
-import { studentSchema, StudentType } from "../../../../utils/zod/StudentSchema";
+import { createStudentSchema, NewStudentType } from "../../../../utils/zod/StudentSchema";
 
 const useNewStudentForm = () => {
-    const defaultValues: StudentType = {
-        rfidNumber: 0,
+    const defaultValues: NewStudentType = {
+        uid: "",
         studentId: "",
-        lastname: "",
         firstname: "",
-        emailAddress: "",
-        dateOfBirth: "",
+        lastname: "",
+        middlename: "",
+        email: "",
+        dateOfBirth: new Date(),
         address: "",
     }
 
-    const [values, setValues] = useState<StudentType>(defaultValues);
+    const [values, setValues] = useState<NewStudentType>(defaultValues);
     const [errors, setErrors] = useState<{ 
-        rfidNumber?: number;
+        uid?: string;
         studentId?: string;
-        lastname?: string;
         firstname?: string;
-        emailAddress?: string;
+        lastname?: string;
+        middlename?: string;
+        email?: string;
         dateOfBirth?: string;
         address?: string;
     }>({});
@@ -26,19 +28,26 @@ const useNewStudentForm = () => {
 
     const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = target;
-        setValues({ ...values, [name]: value });
-    };
+
+        setValues((previousValues) => ({
+            ...previousValues,
+            [name]: name === "dateOfBirth" ? new Date(value) : value,
+          }));
+      };
+      
 
     const validateForm = () => {
-        const result = studentSchema.safeParse(values);
+        const result = createStudentSchema.safeParse(values);
         
         if (result.error) {
           const errorMessages = result.error.flatten().fieldErrors;
           setErrors({
+            uid: errorMessages.uid?.[0],
             studentId: errorMessages.studentId?.[0],
-            lastname: errorMessages.lastname?.[0],
             firstname: errorMessages.firstname?.[0],
-            emailAddress: errorMessages.emailAddress?.[0],
+            lastname: errorMessages.lastname?.[0],
+            middlename: errorMessages.middlename?.[0],
+            email: errorMessages.email?.[0],    
             dateOfBirth: errorMessages.dateOfBirth?.[0],
             address: errorMessages.address?.[0],
           });
