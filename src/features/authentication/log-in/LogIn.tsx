@@ -27,6 +27,11 @@ const LogIn = () => {
   const handleLogIn = (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
+    const isValid = validateForm(); // Ensure it updates the state
+    if (!isValid) {
+      setLoading(false);
+      return;
+    }
     if (validateForm()) {
       loginMutation.mutate(values, {
         onSuccess: () => {
@@ -111,11 +116,10 @@ const LogIn = () => {
               )}
             </div>
             <Button
-              className={`${
-                loading ? "bg-[#335369]" : "bg-[#2B475B]"
-              } bg-[#2B475B] hover:bg-[#335369] w-full`}
+              className={`bg-[#2B475B] hover:bg-[#335369] w-full ${
+                loading ? "bg-[#a1b2be]" : "bg-[#2B475B]"
+              }`}
               type="submit"
-              onClick={handleLogIn}
               disabled={loading}
             >
               {loading ? (
