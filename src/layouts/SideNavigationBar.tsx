@@ -13,7 +13,6 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { IoLogOut } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { Bounce, toast } from "react-toastify";
-import Button from "../components/Button";
 
 const SideNavigationBar = () => {
   const navigate = useNavigate();
@@ -142,22 +141,20 @@ const SideNavigationBar = () => {
           </TooltipProvider>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
-                <Button
-                  className="flex justify-center xl:justify-start items-center gap-2 text-[#385A65] bg-white hover:bg-[#385A65] hover:text-white py-3 xl:pl-2 border-0 rounded-md cursor-pointer w-full"
-                  onClick={handleLogout}
-                >
-                  {isMobileView ? (
+              <TooltipTrigger
+                className="flex justify-center xl:justify-start items-center gap-2 text-[#385A65] bg-white hover:bg-[#385A65] hover:text-white py-3 xl:pl-2 border-0 rounded-md cursor-pointer w-full"
+                onClick={handleLogout}
+              >
+                {isMobileView ? (
+                  <IoLogOut className="text-2xl cursor-pointer" />
+                ) : (
+                  <>
                     <IoLogOut className="text-2xl cursor-pointer" />
-                  ) : (
-                    <>
-                      <IoLogOut className="text-2xl cursor-pointer" />
-                      <label className="text-[16px] font-semibold cursor-pointer">
-                        Log Out
-                      </label>
-                    </>
-                  )}
-                </Button>
+                    <label className="text-[16px] font-semibold cursor-pointer">
+                      Log Out
+                    </label>
+                  </>
+                )}
               </TooltipTrigger>
               <TooltipContent className="bg-[#385A65] text-xs text-white">
                 Log Out
