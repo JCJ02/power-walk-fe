@@ -32,8 +32,8 @@ const useNewStudentForm = () => {
         setValues((previousValues) => ({
             ...previousValues,
             [name]: name === "dateOfBirth" ? new Date(value) : value,
-          }));
-      };
+        }));
+    };
       
 
     const validateForm = () => {

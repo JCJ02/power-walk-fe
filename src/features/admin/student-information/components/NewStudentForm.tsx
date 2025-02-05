@@ -5,7 +5,7 @@ import useNewStudentForm from "../hooks/useNewStudentForm";
 import useNewStudentMutation from "../hooks/useNewStudentMutation";
 
 type NewStudentFormProps = {
-  closeForm?: () => void;
+  closeForm: () => void;
 };
 
 const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
@@ -48,11 +48,10 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
           {/* 1ST FIELDS */}
           <div className="flex items-start gap-2 w-full">
             <div className="flex flex-col items-start w-full">
-              <label className="text-xs md:text-md lg:text-lg">
+              <label className="text-xs md:text-md">
                 RFID Number<b className="text-red-700">*</b>
               </label>
               <Input
-                className={"text-xs md:text-md lg:text-lg"}
                 placeholder="RFID Number"
                 name="uid"
                 value={values.uid}
@@ -60,11 +59,10 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
               />
             </div>
             <div className="flex flex-col items-start w-full">
-              <label className="text-xs md:text-md lg:text-lg">
+              <label className="text-xs md:text-md">
                 Student ID<b className="text-red-700">*</b>
               </label>
               <Input
-                className={"text-xs md:text-md lg:text-lg"}
                 placeholder="Student ID"
                 name="studentId"
                 value={values.studentId}
@@ -81,11 +79,10 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
           {/* 2ND FIELDS */}
           <div className="flex items-start gap-2 w-full">
             <div className="flex flex-col items-start w-full">
-              <label className="text-xs md:text-md lg:text-lg">
+              <label className="text-xs md:text-md">
                 Firstname<b className="text-red-700">*</b>
               </label>
               <Input
-                className={"text-xs md:text-md lg:text-lg"}
                 placeholder="Firstname"
                 name="firstname"
                 value={values.firstname}
@@ -98,11 +95,10 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
               )}
             </div>
             <div className="flex flex-col items-start w-full">
-              <label className="text-xs md:text-md lg:text-lg">
+              <label className="text-xs md:text-md">
                 Lastname<b className="text-red-700">*</b>
               </label>
               <Input
-                className={"text-xs md:text-md lg:text-lg"}
                 placeholder="Lastname"
                 name="lastname"
                 value={values.lastname}
@@ -115,11 +111,8 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
               )}
             </div>
             <div className="flex flex-col items-start w-full">
-              <label className="text-xs md:text-md lg:text-lg">
-                Middlename
-              </label>
+              <label className="text-xs md:text-md">Middlename</label>
               <Input
-                className={"text-xs md:text-md lg:text-lg"}
                 placeholder="Middlename"
                 name="middlename"
                 value={values.middlename ?? ""}
@@ -131,11 +124,10 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
           {/* 3RD FIELDS */}
           <div className="flex items-start gap-2 w-full">
             <div className="flex flex-col items-start w-full">
-              <label className="text-xs md:text-md lg:text-lg">
+              <label className="text-xs md:text-md">
                 Email Address<b className="text-red-700">*</b>
               </label>
               <Input
-                className={"text-xs md:text-md lg:text-lg"}
                 placeholder="Email Address"
                 name="email"
                 value={values.email}
@@ -148,11 +140,11 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
               )}
             </div>
             <div className="flex flex-col items-start w-full">
-              <label className="text-xs md:text-md lg:text-lg">
+              <label className="text-xs md:text-md">
                 Date Of Birth<b className="text-red-700">*</b>
               </label>
-              <Input
-                className="text-xs md:text-md lg:text-lg py-1 px-2 border-2 rounded-md border-[#EEEEEE] w-full"
+              <input
+                className="text-xs md:text-md p-2 border-2 rounded-md border-[#EEEEEE] w-full"
                 type="date"
                 name="dateOfBirth"
                 value={
@@ -163,18 +155,17 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
                 onChange={handleChange}
               />
               {errors.dateOfBirth && (
-                <p className="font-poppins self-start text-xs md:text-md text-red-700">
+                <p className="font-poppins self-start text-xs text-red-700">
                   {errors.dateOfBirth}
                 </p>
               )}
             </div>
           </div>
           <div className="flex flex-col items-start w-full">
-            <label className="text-xs md:text-md lg:text-lg">
+            <label className="text-xs md:text-md">
               Address<b className="text-red-700">*</b>
             </label>
             <Input
-              className={"text-xs md:text-md lg:text-lg"}
               placeholder="Address"
               name="address"
               value={values.address}
@@ -194,12 +185,12 @@ const NewStudentForm = ({ closeForm }: NewStudentFormProps) => {
         </div>
         <div className="flex self-end items-center pt-5 gap-2">
           <Button
-            className="bg-white text-[#385A65] px-5 md:px-10 rounded-md border-[1px] border-white hover:border-[1px] hover:border-[#385A65]"
+            className="bg-white lg:text-sm text-[#385A65] px-5 md:px-10 rounded-md border-[1px] border-white hover:border-[1px] hover:border-[#385A65]"
             onClick={closeForm}
           >
             Cancel
           </Button>
-          <Button className="px-5 md:px-10 rounded-md" type="submit">
+          <Button className="lg:text-sm px-5 md:px-10 rounded-md" type="submit">
             Submit
           </Button>
         </div>
