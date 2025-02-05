@@ -1,83 +1,84 @@
 import { useEffect } from "react";
 import Button from "../../../../components/Button";
+import { StudentType } from "../../../../types/StudentType";
+import { format } from "date-fns";
 
 type ViewStudentModalProps = {
-  closeForm?: () => void;
+  closeForm: () => void;
+  student: StudentType;
 };
 
-const ViewStudentModal = ({ closeForm }: ViewStudentModalProps) => {
+const ViewStudentModal = ({ closeForm, student }: ViewStudentModalProps) => {
   useEffect(() => {
     document.title = "View Student - Power Walk Technology";
   });
   return (
     <>
-      <div className="flex flex-col items-start gap-5 bg-white px-8 py-10">
+      <div
+        className="flex flex-col items-start gap-5 bg-white p-10 w-[640px]"
+        key={student.id}
+      >
         <h1 className="text-xl font-semibold">View Student</h1>
         <div className="flex justify-between items-center gap-4 w-full">
-          <div className="flex flex-col items-start">
-            <label>RFID Number</label>
-            <label className="test-xs md:text-md lg:text-lg text-[#385A65]">
-              1000213
+          <div className="flex items-center gap-1 w-full">
+            <label>RFID Number:</label>
+            <label className="test-xs md:text-md lg:text-lg text-[#385A65] font-bold">
+              {student.uid}
             </label>
           </div>
-          <div className="flex flex-col items-start">
-            <label>Student ID</label>
-            <label className="test-xs md:text-md lg:text-lg text-[#385A65]">
-              21-1780
+          <div className="flex items-center gap-1 w-full">
+            <label>Student ID:</label>
+            <label className="test-xs md:text-md lg:text-lg text-[#385A65] font-bold">
+              {student.studentId}
             </label>
           </div>
         </div>
         <div className="flex justify-between items-center gap-4 w-full">
           <div className="flex flex-col items-start">
-            <label>Lastnamer</label>
-            <label className="test-xs md:text-md lg:text-lg text-[#385A65]">
-              Jacobe
+            <label>Firstname:</label>
+            <label className="test-xs md:text-md lg:text-lg text-[#385A65] font-bold">
+              {student.firstname}
             </label>
           </div>
           <div className="flex flex-col items-start">
-            <label>Firstname</label>
-            <label className="test-xs md:text-md lg:text-lg text-[#385A65]">
-              John Carlo
+            <label>Lastname:</label>
+            <label className="test-xs md:text-md lg:text-lg text-[#385A65] font-bold">
+              {student.lastname}
             </label>
           </div>
           <div className="flex flex-col items-start">
-            <label>Middlename</label>
-            <label className="test-xs md:text-md lg:text-lg text-[#385A65]">
-              Pura
+            <label>Middlename:</label>
+            <label className="test-xs md:text-md lg:text-lg text-[#385A65] font-bold">
+              {student.middlename}
             </label>
           </div>
         </div>
         <div className="flex items-center gap-4 w-full">
-          <div className="flex flex-col items-start">
-            <label>Email Address</label>
-            <label className="test-xs md:text-md lg:text-lg text-[#385A65]">
-              jacobe.johncarlo.02022003@gmail.com
+          <div className="flex flex-col items-start w-3/4">
+            <label>Email Address:</label>
+            <label className="test-xs md:text-md lg:text-lg text-[#385A65] font-bold">
+              {student.email}
             </label>
           </div>
-          <div className="flex flex-col items-start">
-            <label>Date Of Birth</label>
-            <label className="test-xs md:text-md lg:text-lg text-[#385A65]">
-              Feb. 02, 2024
+          <div className="flex flex-col items-start w-1/4">
+            <label>Date Of Birth:</label>
+            <label className="test-xs md:text-md lg:text-lg text-[#385A65] font-bold">
+              {format(new Date(student.dateOfBirth), "MMMM dd, yyyy")}
             </label>
           </div>
         </div>
         <div className="flex flex-col items-start">
-          <label>Address</label>
-          <label className="test-xs md:text-md lg:text-lg text-[#385A65]">
-            49-P Sampaloc Alley Hills St. Batasan Hills, Quezon City
+          <label>Address:</label>
+          <label className="test-xs md:text-md lg:text-lg text-[#385A65] font-bold">
+            {student.address}
           </label>
         </div>
-        <div className="flex self-end items-center pt-5 gap-2">
-          <Button
-            className="bg-white lg:text-sm text-[#385A65] px-5 md:px-10 rounded-md border-[1px] border-white hover:border-[1px] hover:border-[#385A65]"
-            onClick={closeForm}
-          >
-            Cancel
-          </Button>
-          <Button className="lg:text-sm px-5 md:px-10 rounded-md">
-            Submit
-          </Button>
-        </div>
+        <Button
+          className="lg:text-sm px-5 md:px-10 self-end rounded-md"
+          onClick={closeForm}
+        >
+          Ok
+        </Button>
       </div>
     </>
   );
