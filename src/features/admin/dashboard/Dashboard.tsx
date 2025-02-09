@@ -1,7 +1,31 @@
 import { useEffect } from "react";
 import BatteryGauge from "react-battery-gauge";
+import useFetchBatteryPercentage from "./hooks/useFetchBatteryPercentage";
+import useFetchElectricityGenerated from "./hooks/useFetchEletricityGenerated";
+import useFetchElectricityConsumption from "./hooks/useFetchElectricityConsumption";
 
 const Dashboard = () => {
+  const {
+    batteryPercentageData,
+    batteryPercentageLoading,
+    isBatteryPercentageError,
+    batteryPercentageError,
+  } = useFetchBatteryPercentage();
+
+  const {
+    electricityGeneratedData,
+    electricityGeneratedLoading,
+    isElectricityGeneratedError,
+    electricityGeneratedError,
+  } = useFetchElectricityGenerated();
+
+  const {
+    electricityConsumptionData,
+    electricityConsumptionDataLoading,
+    isElectricityConsumptionDataError,
+    electricityConsumptionDataError,
+  } = useFetchElectricityConsumption();
+
   useEffect(() => {
     document.title = "Dashboard - Power Walk Technology";
   }, []);
@@ -11,31 +35,70 @@ const Dashboard = () => {
         <h1 className="text-xl xl:text-3xl font-semibold">Dashboard</h1>
         <div className="flex flex-col lg:flex-row items-center gap-5 w-full">
           <div className="border-2 flex flex-col items-center gap-2 py-8 px-5 rounded-md w-full">
-            <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] font-bold">
-              Battery Percentage
+            <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] text-center font-bold">
+              BATTERY PERCENTAGE
             </h1>
-            <BatteryGauge
-              animated
-              orientation="vertical"
-              value={0}
-              size={240}
-            />
+            {batteryPercentageLoading ? (
+              <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+                ₱0 PHP
+              </h1>
+            ) : isBatteryPercentageError ? (
+              <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+                {`Error: ${
+                  batteryPercentageError?.message ||
+                  "An Unknown Error Occurred."
+                }`}
+              </h1>
+            ) : batteryPercentageData ? (
+              <BatteryGauge
+                animated
+                orientation="vertical"
+                value={Number(batteryPercentageData.data.batteryPercentage)}
+                size={240}
+              />
+            ) : null}
           </div>
           <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-full w-full">
             <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] text-center font-bold">
-              Energy Generated
+              ELECTRICITY GENERATED
             </h1>
-            <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
-              7.5 kWh
-            </label>
+            {electricityGeneratedLoading ? (
+              <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
+                0.0 kWh
+              </label>
+            ) : isElectricityGeneratedError ? (
+              <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
+                {`Error: ${
+                  electricityGeneratedError?.message ||
+                  "An Unknown Error Occurred."
+                }`}
+              </label>
+            ) : batteryPercentageData ? (
+              <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
+                {electricityGeneratedData?.data.electricityGenerated} kWh
+              </label>
+            ) : null}
           </div>
           <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-full w-full">
             <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] text-center font-bold">
-              Energy Consumption
+              ELECTRICITY CONSUMPTION
             </h1>
-            <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
-              8.5 kWh
-            </label>
+            {electricityConsumptionDataLoading ? (
+              <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
+                0.0 kWh
+              </label>
+            ) : isElectricityConsumptionDataError ? (
+              <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
+                {`Error: ${
+                  electricityConsumptionDataError?.message ||
+                  "An Unknown Error Occurred."
+                }`}
+              </label>
+            ) : electricityConsumptionData ? (
+              <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
+                {electricityConsumptionData?.data.electricityConsumption} kWh
+              </label>
+            ) : null}
           </div>
         </div>
       </div>
