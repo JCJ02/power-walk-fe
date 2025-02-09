@@ -21,16 +21,16 @@ const Dashboard = () => {
               size={240}
             />
           </div>
-          <div className="border-2 flex flex-col justify-center items-center gap-5 py-10 lg:py-0 h-full w-full">
-            <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] font-bold">
+          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-full w-full">
+            <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] text-center font-bold">
               Energy Generated
             </h1>
             <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
               7.5 kWh
             </label>
           </div>
-          <div className="border-2 flex flex-col justify-center items-center gap-5 py-10 lg:py-0 h-full w-full">
-            <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] font-bold">
+          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-full w-full">
+            <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] text-center font-bold">
               Energy Consumption
             </h1>
             <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
