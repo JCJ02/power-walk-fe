@@ -6,7 +6,7 @@ import usePut from '../../../../hooks/usePut';
 
 type UpdateStudentResponse = {
     id: number,
-    uid?: string,
+    uid?: number,
     studentId: string,
     firstname: string,
     lastname: string,

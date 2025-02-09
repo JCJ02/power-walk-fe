@@ -1,6 +1,6 @@
 export type StudentType = {
     id: number;
-    uid: string;
+    uid: number;
     studentId: string;
     firstname: string;
     lastname: string;

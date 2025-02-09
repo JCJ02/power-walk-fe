@@ -6,7 +6,7 @@ import { NewStudentType } from '../../../../utils/zod/StudentSchema';
 
 type NewStudentResponse = {
     id: number,
-    uid: string,
+    uid: number,
     studentId: string,
     firstname: string,
     lastname: string,

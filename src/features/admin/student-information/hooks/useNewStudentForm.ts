@@ -3,7 +3,7 @@ import { createStudentSchema, NewStudentType } from "../../../../utils/zod/Stude
 
 const useNewStudentForm = () => {
     const defaultValues: NewStudentType = {
-        uid: "",
+        uid: 0,
         studentId: "",
         firstname: "",
         lastname: "",
@@ -31,7 +31,8 @@ const useNewStudentForm = () => {
 
         setValues((previousValues) => ({
             ...previousValues,
-            [name]: name === "dateOfBirth" ? new Date(value) : value,
+            [name]: name === "dateOfBirth" ? new Date(value) :
+                    name === "uid" ? Number(value) || undefined : value,
         }));
     };
       
