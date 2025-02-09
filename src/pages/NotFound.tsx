@@ -26,7 +26,7 @@ const NotFound = () => {
             className="font-poppins font-bold text-xs md:text-md lg:text-lg text-[#385A65] hover:underline"
             to={"/"}
           >
-            Sign In
+            Previous Page
           </Link>
         </div>
         <Footer />
