@@ -3,8 +3,18 @@ import BatteryGauge from "react-battery-gauge";
 import useFetchBatteryPercentage from "./hooks/useFetchBatteryPercentage";
 import useFetchElectricityGenerated from "./hooks/useFetchEletricityGenerated";
 import useFetchElectricityConsumption from "./hooks/useFetchElectricityConsumption";
+import Button from "../../../components/Button";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Dashboard = () => {
+  const UseQueryClient = useQueryClient();
+
+  const handleRefreshButton = () => {
+    UseQueryClient.invalidateQueries({ queryKey: ["battery-percentage"] });
+    UseQueryClient.invalidateQueries({ queryKey: ["electricity-generated"] });
+    UseQueryClient.invalidateQueries({ queryKey: ["electricity-consumption"] });
+  };
+
   const {
     batteryPercentageData,
     batteryPercentageLoading,
@@ -28,11 +38,20 @@ const Dashboard = () => {
 
   useEffect(() => {
     document.title = "Dashboard - Power Walk Technology";
+    const interval = setInterval(() => {
+      handleRefreshButton();
+    }, 300);
+    return () => clearInterval(interval);
   }, []);
   return (
     <>
       <div className="flex flex-col items-start gap-5 font-poppins py-5 pl-6 lg:pl-8 pr-6 lg:pr-10 overflow-y-scroll h-screen w-full">
-        <h1 className="text-xl xl:text-3xl font-semibold">Dashboard</h1>
+        <div className="flex justify-between items-center w-full">
+          <h1 className="text-xl xl:text-3xl font-semibold">Dashboard</h1>
+          <Button className="hidden" onClick={handleRefreshButton}>
+            Refresh
+          </Button>
+        </div>
         <div className="flex flex-col lg:flex-row items-center gap-5 w-full">
           <div className="border-2 flex flex-col items-center gap-2 py-8 px-5 rounded-md w-full">
             <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] text-center font-bold">
@@ -55,6 +74,8 @@ const Dashboard = () => {
                 orientation="vertical"
                 value={Number(batteryPercentageData.data.batteryPercentage)}
                 size={240}
+                chargingStartValue={1}
+                maxValue={100}
               />
             ) : null}
           </div>

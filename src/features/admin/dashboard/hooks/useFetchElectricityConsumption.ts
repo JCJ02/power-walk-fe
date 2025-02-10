@@ -14,7 +14,7 @@ const useFetchElectricityConsumption = () => {
         isError: isElectricityConsumptionDataError, 
         error: electricityConsumptionDataError 
     } = useFetch<ElectricityConsumptionResponse>(
-        "electricity-generated",
+        "electricity-consumption",
         `${baseUrl}api/hardware/electricity-consumption`,
     );
 
