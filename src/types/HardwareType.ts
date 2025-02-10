@@ -1,6 +1,7 @@
 export type Battery = {
     id: number;
-    batteryPercentage: string,
+    batteryPercentage?: string,
+    current?: string,
     createdAt: Date;
     updatedAt: Date;
     deleteAt: Date;
