@@ -4,10 +4,10 @@ import LogIn from "../features/authentication/log-in/LogIn";
 import SignUp from "../features/authentication/sign-up/SignUp";
 import Dashboard from "../features/admin/dashboard/Dashboard";
 import StudentInformation from "../features/admin/student-information/StudentInformation";
-import ChangePassword from "../features/settings/ChangePassword";
-import EditProfile from "../features/settings/EditProfile";
 import Admin from "../features/admin/Admin";
 import PrivateRoute from "./PrivateRoute";
+import NewRFIDForm from "../features/admin/rfid-registration/components/NewRFIDForm";
+import Settings from "../features/admin/settings/Settings";
 
 const AppRoutes = () => {
   return (
@@ -23,8 +23,8 @@ const AppRoutes = () => {
               path="student-information"
               element={<StudentInformation />}
             />
-            <Route path="change-password" element={<ChangePassword />} />
-            <Route path="edit-profile" element={<EditProfile />} />
+            <Route path="rfid-registration" element={<NewRFIDForm />} />
+            <Route path="settings" element={<Settings />}></Route>
           </Route>
         </Route>
       </Routes>
