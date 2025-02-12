@@ -6,8 +6,8 @@ import Dashboard from "../features/admin/dashboard/Dashboard";
 import StudentInformation from "../features/admin/student-information/StudentInformation";
 import Admin from "../features/admin/Admin";
 import PrivateRoute from "./PrivateRoute";
-import NewRFIDForm from "../features/admin/rfid-registration/components/NewRFIDForm";
 import Settings from "../features/admin/settings/Settings";
+import RFID from "../features/admin/rfid-registration/RFID";
 
 const AppRoutes = () => {
   return (
@@ -23,7 +23,7 @@ const AppRoutes = () => {
               path="student-information"
               element={<StudentInformation />}
             />
-            <Route path="rfid-registration" element={<NewRFIDForm />} />
+            <Route path="rfid" element={<RFID />} />
             <Route path="settings" element={<Settings />}></Route>
           </Route>
         </Route>
