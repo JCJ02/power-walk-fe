@@ -80,7 +80,7 @@ const RFID = () => {
             RFIDData.data.rfids.map((rfid: RFIDType, index: number) => (
               <div
                 key={index}
-                className="flex items-center gap-1 border-2 p-5 rounded-md h-[144px]"
+                className="flex flex-col lg:flex-row items-center gap-1 border-2 p-5 rounded-md h-[144px]"
               >
                 <label className="text-lg">RFID Number:</label>
                 <label className="text-lg font-bold">{rfid.uid}</label>
