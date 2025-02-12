@@ -15,7 +15,6 @@ const AppRoutes = () => {
       <Routes>
         <Route path="*" element={<NotFound />} />
         <Route path="/log-in" element={<LogIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Admin />}>
             <Route index element={<Dashboard />} />
@@ -25,6 +24,7 @@ const AppRoutes = () => {
             />
             <Route path="rfid" element={<RFID />} />
             <Route path="settings" element={<Settings />}></Route>
+            <Route path="/sign-up" element={<SignUp />} />
           </Route>
         </Route>
       </Routes>
