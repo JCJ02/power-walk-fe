@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "../../../components/Button";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import backgroundImage from "../../../assets/images/power-walk-bg.jpg";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -39,8 +39,7 @@ const LogIn = () => {
         },
         onError: () => {
           setLoading(false);
-          const message =
-            "Oops, Invalid Crendentials! Please Check Your Credentials!";
+          const message = "Oops, Wrong Email Address or Password!";
           setErrorMessage(message);
         },
       });
@@ -131,7 +130,7 @@ const LogIn = () => {
                 "Sign In"
               )}
             </Button>
-            <div className="flex justify-center items-center gap-10 w-full">
+            {/* <div className="flex justify-center items-center gap-10 w-full">
               <p className="font-poppins text-xs md:text-md 2xl:text-lg">
                 Don't have an account?
               </p>
@@ -147,7 +146,7 @@ const LogIn = () => {
               className="font-poppins text-xs md:text-md 2xl:text-lg hover:underline"
             >
               Forgot Password?
-            </Link>
+            </Link> */}
           </form>
           <Footer />
         </div>
