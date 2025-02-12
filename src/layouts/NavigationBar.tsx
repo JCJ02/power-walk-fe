@@ -1,5 +1,5 @@
-import Picture from "../components/Picture";
-import AdminPhoto from "../assets/images/Admin-Profile-Vector-PNG-Isolated-HD.png";
+// import Picture from "../components/Picture";
+// import AdminPhoto from "../assets/images/Admin-Profile-Vector-PNG-Isolated-HD.png";
 import { useUser } from "../context/UserContext";
 
 const NavigationBar = () => {
@@ -12,10 +12,10 @@ const NavigationBar = () => {
             Welcome,{" "}
             <b>{user ? `${user.firstname} ${user.lastname}` : "Admin"}</b>
           </label>
-          <Picture
+          {/* <Picture
             className="rounded-full h-[20px] w-[20px] lg:h-[30px] lg:w-[30px]"
             source={AdminPhoto}
-          />
+          /> */}
         </div>
       </div>
     </>

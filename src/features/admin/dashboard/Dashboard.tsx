@@ -52,7 +52,7 @@ const Dashboard = () => {
             Refresh
           </Button>
         </div>
-        <div className="flex flex-col lg:flex-row items-center gap-5 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 w-full">
           <div className="border-2 flex flex-col items-center gap-2 py-8 px-5 rounded-md w-full">
             <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] text-center font-bold">
               BATTERY PERCENTAGE
@@ -79,7 +79,7 @@ const Dashboard = () => {
               />
             ) : null}
           </div>
-          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-full w-full">
+          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[360px] w-full">
             <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] text-center font-bold">
               ELECTRICITY GENERATED
             </h1>
@@ -100,7 +100,7 @@ const Dashboard = () => {
               </label>
             ) : null}
           </div>
-          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-full w-full">
+          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[360px] w-full">
             <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] text-center font-bold">
               ELECTRICITY CONSUMPTION
             </h1>

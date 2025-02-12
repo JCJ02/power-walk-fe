@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Logo from "../components/Logo";
 import { MdDashboard } from "react-icons/md";
-import { PiStudentFill } from "react-icons/pi";
+// import { PiStudentFill } from "react-icons/pi";
 import { Link, useLocation } from "react-router-dom";
 import {
   Tooltip,
@@ -9,7 +9,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../components/ui/tooltip";
-import { IoSettingsSharp } from "react-icons/io5";
+import { RiRfidFill } from "react-icons/ri";
+// import { IoSettingsSharp } from "react-icons/io5";
 import { IoLogOut } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { Bounce, toast } from "react-toastify";
@@ -52,6 +53,7 @@ const SideNavigationBar = () => {
         <div className="flex flex-col justify-center items-center">
           <Logo className="my-10 w-12 h-12 xl:w-[144px] xl:h-[144px]" />
           <div className="flex flex-col gap-2 px-2 xl:px-4 w-full">
+            {/* DASHBOARD */}
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -80,7 +82,9 @@ const SideNavigationBar = () => {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <TooltipProvider>
+
+            {/* STUDENT INFORMATION */}
+            {/* <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
                   <Link
@@ -107,11 +111,41 @@ const SideNavigationBar = () => {
                   Student Information
                 </TooltipContent>
               </Tooltip>
+            </TooltipProvider> */}
+
+            {/* RFID REGISTRATION */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Link
+                    className={
+                      location.pathname === "/rfid"
+                        ? "flex justify-center xl:justify-start items-center gap-2 bg-[#385A65] text-white py-3 xl:pl-2 rounded-md cursor-pointer w-full"
+                        : "flex justify-center xl:justify-start items-center gap-2 text-[#385A65] py-3 xl:pl-2 border-0 cursor-pointer w-full"
+                    }
+                    to={"/rfid"}
+                  >
+                    {isMobileView ? (
+                      <RiRfidFill className="text-2xl cursor-pointer" />
+                    ) : (
+                      <>
+                        <RiRfidFill className="text-2xl cursor-pointer" />
+                        <label className="text-[16px] font-semibold cursor-pointer">
+                          RFID
+                        </label>
+                      </>
+                    )}
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent className="bg-[#385A65] text-xs text-white">
+                  Radio-Frequency IDentification
+                </TooltipContent>
+              </Tooltip>
             </TooltipProvider>
           </div>
         </div>
         <div className="flex flex-col gap-2 py-2 px-2 xl:px-4 w-full">
-          <TooltipProvider>
+          {/* <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
                 <Link
@@ -138,7 +172,7 @@ const SideNavigationBar = () => {
                 Settings
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider>
+          </TooltipProvider> */}
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger
