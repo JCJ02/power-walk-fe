@@ -115,8 +115,8 @@ const LogIn = () => {
               )}
             </div>
             <Button
-              className={`bg-[#2B475B] hover:bg-[#335369] w-full ${
-                loading ? "bg-[#a1b2be]" : "bg-[#2B475B]"
+              className={`bg-[#2B475B] w-full ${
+                loading ? "bg-[#A1B2BE]" : "bg-[#2B475B]"
               }`}
               type="submit"
               disabled={loading}
