@@ -85,7 +85,7 @@ const Dashboard = () => {
             </h1>
             {electricityGeneratedLoading ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
-                0.0 kWh
+                0.0 Amp
               </label>
             ) : isElectricityGeneratedError ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
@@ -96,7 +96,7 @@ const Dashboard = () => {
               </label>
             ) : batteryPercentageData ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
-                {electricityGeneratedData?.data.electricityGenerated} kWh
+                {electricityGeneratedData?.data.electricityGenerated} Amp
               </label>
             ) : null}
           </div>
@@ -106,7 +106,7 @@ const Dashboard = () => {
             </h1>
             {electricityConsumptionDataLoading ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
-                0.0 kWh
+                0.0 Amp
               </label>
             ) : isElectricityConsumptionDataError ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
@@ -117,7 +117,7 @@ const Dashboard = () => {
               </label>
             ) : electricityConsumptionData ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
-                {electricityConsumptionData?.data.electricityConsumption} kWh
+                {electricityConsumptionData?.data.electricityConsumption} Amp
               </label>
             ) : null}
           </div>
