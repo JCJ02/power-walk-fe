@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "../../../../components/ui/input";
 import Button from "../../../../components/Button";
 import useNewRFIDForm from "../hooks/useNewRFIDForm";
@@ -12,13 +12,14 @@ const NewRFIDForm = ({ closeForm }: NewRFIDProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const {
     values,
-    // setValues,
+    setValues,
     errors,
     // setErrors,
     handleChange,
     validateForm,
   } = useNewRFIDForm();
   const createRFIDMutation = useNewRFIDFormMutation();
+  const rfidInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -37,7 +38,28 @@ const NewRFIDForm = ({ closeForm }: NewRFIDProps) => {
 
   useEffect(() => {
     document.title = "RFID Registration - Power Walk Technology";
-  }, []);
+
+    if (rfidInputRef.current) {
+      rfidInputRef.current.focus();
+    }
+
+    const handleRFIDScan = (event: any) => {
+      event.stopPropagation();
+      const rfidNumber = event.detail;
+      if (rfidNumber) {
+        setValues(rfidNumber);
+        if (rfidInputRef.current) {
+          rfidInputRef.current.focus();
+        }
+      }
+    };
+
+    window.addEventListener("rfidScan", handleRFIDScan);
+
+    return () => {
+      window.removeEventListener("rfidScan", handleRFIDScan);
+    };
+  }, [setValues]);
   return (
     <>
       <form
@@ -57,6 +79,7 @@ const NewRFIDForm = ({ closeForm }: NewRFIDProps) => {
             value={values.uid}
             onChange={handleChange}
             onClick={(event: any) => event.stopPropagation()}
+            ref={rfidInputRef}
           />
           {errors.uid && (
             <p className="font-poppins text-red-700 text-xs md:text-md w-full">
@@ -75,7 +98,10 @@ const NewRFIDForm = ({ closeForm }: NewRFIDProps) => {
           </Button>
           <Button
             className="bg-white lg:text-sm text-[#385A65] px-5 md:px-10 rounded-md border-[1px] border-white hover:border-[1px] hover:border-[#385A65] w-full"
-            onClick={closeForm}
+            onClick={(event: any) => {
+              event.stopPropagation();
+              closeForm();
+            }}
           >
             Cancel
           </Button>
