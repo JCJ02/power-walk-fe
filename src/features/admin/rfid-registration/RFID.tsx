@@ -65,8 +65,8 @@ const RFID = () => {
         {/* RFID CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4 w-full">
           {isRFIDLoading ? (
-            <div className="flex items-center gap-1 border-2 p-5 rounded-md">
-              <label className="text-center text-lg text-gray-500 h-[144px]">
+            <div className="flex justify-center items-center gap-1 border-2 p-5 rounded-md h-[144px]">
+              <label className="text-center text-lg text-gray-500">
                 Loading...
               </label>
             </div>
@@ -80,15 +80,15 @@ const RFID = () => {
             RFIDData.data.rfids.map((rfid: RFIDType, index: number) => (
               <div
                 key={index}
-                className="flex flex-col lg:flex-row items-center gap-1 border-2 p-5 rounded-md h-[144px]"
+                className="flex flex-col lg:flex-row justify-center items-center gap-1 border-2 p-5 rounded-md h-[144px]"
               >
                 <label className="text-lg">RFID Number:</label>
                 <label className="text-lg font-bold">{rfid.uid}</label>
               </div>
             ))
           ) : (
-            <div className="flex items-center gap-1 border-2 p-5 rounded-md">
-              <label className="text-center text-lg text-gray-500 h-[144px]">
+            <div className="flex justify-center items-center gap-1 border-2 p-5 rounded-md h-[144px]">
+              <label className="text-center text-lg text-gray-500">
                 No Data Found
               </label>
             </div>

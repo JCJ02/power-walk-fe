@@ -150,6 +150,9 @@ const NewRFIDForm = ({ closeForm }: NewRFIDProps) => {
           },
           onError: () => {
             setErrorMessage("UID is already Exist!");
+            setInterval(() => {
+              closeForm();
+            }, 3000);
           },
         });
       }
@@ -237,7 +240,7 @@ const NewRFIDForm = ({ closeForm }: NewRFIDProps) => {
             </p>
           )} */}
           {errorMessage && (
-            <p className="font-poppins text-red-700 text-xs md:text-md w-full">
+            <p className="font-poppins text-red-700 text-xs md:text-md lg:text-lg text-center w-full">
               {errorMessage}
             </p>
           )}
