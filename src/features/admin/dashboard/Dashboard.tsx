@@ -59,7 +59,7 @@ const Dashboard = () => {
             </h1>
             {batteryPercentageLoading ? (
               <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
-                ₱0 PHP
+                0 %
               </h1>
             ) : isBatteryPercentageError ? (
               <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
@@ -85,7 +85,7 @@ const Dashboard = () => {
             </h1>
             {electricityGeneratedLoading ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
-                0.0 Amp
+                0.0 mAh
               </label>
             ) : isElectricityGeneratedError ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
@@ -96,7 +96,7 @@ const Dashboard = () => {
               </label>
             ) : batteryPercentageData ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
-                {electricityGeneratedData?.data.electricityGenerated} Amp
+                {electricityGeneratedData?.data.electricityGenerated} mAh
               </label>
             ) : null}
           </div>
@@ -106,7 +106,7 @@ const Dashboard = () => {
             </h1>
             {electricityConsumptionDataLoading ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
-                0.0 Amp
+                0.0 mAh
               </label>
             ) : isElectricityConsumptionDataError ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
@@ -117,7 +117,7 @@ const Dashboard = () => {
               </label>
             ) : electricityConsumptionData ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-2xl py-2 px-5 rounded-sm">
-                {electricityConsumptionData?.data.electricityConsumption} Amp
+                {electricityConsumptionData?.data.electricityConsumption} mAh
               </label>
             ) : null}
           </div>
