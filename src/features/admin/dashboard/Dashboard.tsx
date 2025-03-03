@@ -5,6 +5,21 @@ import useFetchElectricityGenerated from "./hooks/useFetchEletricityGenerated";
 import useFetchElectricityConsumption from "./hooks/useFetchElectricityConsumption";
 import Button from "../../../components/Button";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../components/ui/card";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "../../../components/ui/chart";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import useDailyUsage from "./hooks/useDailyUsage";
 
 const Dashboard = () => {
   const UseQueryClient = useQueryClient();
@@ -13,6 +28,7 @@ const Dashboard = () => {
     UseQueryClient.invalidateQueries({ queryKey: ["battery-percentage"] });
     UseQueryClient.invalidateQueries({ queryKey: ["electricity-generated"] });
     UseQueryClient.invalidateQueries({ queryKey: ["electricity-consumption"] });
+    UseQueryClient.invalidateQueries({ queryKey: ["daily-usage"] });
   };
 
   const {
@@ -35,6 +51,16 @@ const Dashboard = () => {
     isElectricityConsumptionDataError,
     electricityConsumptionDataError,
   } = useFetchElectricityConsumption();
+
+  const { historyData, historyLoading, isHistoryError, historyError } =
+    useDailyUsage();
+
+  const chartConfig = {
+    uid2: {
+      label: "Student",
+      color: "hsl(var(--chart-1))",
+    },
+  } satisfies ChartConfig;
 
   useEffect(() => {
     document.title = "Dashboard - Power Walk Technology";
@@ -79,7 +105,7 @@ const Dashboard = () => {
               />
             ) : null}
           </div>
-          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[360px] w-full">
+          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[400px] w-full">
             <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] text-center font-bold">
               ELECTRICITY GENERATED
             </h1>
@@ -100,7 +126,7 @@ const Dashboard = () => {
               </label>
             ) : null}
           </div>
-          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[360px] w-full">
+          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[400px] w-full">
             <h1 className="text-xs md:text-md lg:text-2xl text-[#385A65] text-center font-bold">
               ELECTRICITY CONSUMPTION
             </h1>
@@ -121,6 +147,71 @@ const Dashboard = () => {
               </label>
             ) : null}
           </div>
+        </div>
+        <div className="flex flex-col lg:flex-row items-center gap-4 w-full">
+          <Card className="w-full lg:w-1/2">
+            <CardHeader>
+              <CardTitle className="text-[#385A65]">Daily Usage</CardTitle>
+              <CardDescription className="text-justify">
+                The number of students who used the Charging Station per day.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {historyLoading ? (
+                <p>Loading...</p>
+              ) : isHistoryError ? (
+                <p className="text-red-500 font-semibold">
+                  {`Error: ${
+                    historyError?.message || "An unknown error occurred."
+                  }`}
+                </p>
+              ) : historyData?.length > 0 ? (
+                <ChartContainer config={chartConfig} className="w-full">
+                  <LineChart data={historyData}>
+                    <CartesianGrid vertical={false} />
+                    <XAxis
+                      dataKey="date_added"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={20}
+                      tickFormatter={(value) => {
+                        const date = new Date(value);
+
+                        return date.toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          // year: "numeric",
+                        });
+                      }}
+                    />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      domain={[0, "auto"]}
+                      allowDecimals={false}
+                      tickCount={5}
+                      tickFormatter={(value) => `${Math.round(value)}`}
+                    />
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent hideLabel />}
+                    />
+                    <Line
+                      dataKey="uid2"
+                      type="linear"
+                      stroke="#385A65"
+                      strokeWidth={2}
+                      dot={true}
+                    />
+                  </LineChart>
+                </ChartContainer>
+              ) : (
+                <p className="text-gray-500">
+                  No Data Available for Daily Usage.
+                </p>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </>

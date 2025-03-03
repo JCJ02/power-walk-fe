@@ -14,3 +14,15 @@ export type RFIDListResponse = {
     message?: string;
     code?: number;
 }
+
+export type HistoryType = {
+    id: number,
+    uid2: string,
+    date_added: string
+}
+
+export type HistoryResponse = {
+    data: HistoryType[];
+    message?: string;
+    code?: number;
+}
