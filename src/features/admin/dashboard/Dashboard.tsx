@@ -167,16 +167,19 @@ const Dashboard = () => {
                 </p>
               ) : historyData?.length > 0 ? (
                 <ChartContainer config={chartConfig} className="w-full">
-                  <LineChart data={historyData}>
+                  <LineChart
+                    data={historyData}
+                    // margin={{ left: -24, right: 12 }}
+                  >
                     <CartesianGrid vertical={false} />
                     <XAxis
+                      className="pr-3"
                       dataKey="date_added"
                       tickLine={false}
                       axisLine={false}
-                      tickMargin={20}
+                      tickMargin={8}
                       tickFormatter={(value) => {
                         const date = new Date(value);
-
                         return date.toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -191,6 +194,16 @@ const Dashboard = () => {
                       allowDecimals={false}
                       tickCount={5}
                       tickFormatter={(value) => `${Math.round(value)}`}
+                      label={{
+                        value: "No. of Students",
+                        angle: -90,
+                        position: "insideLeft",
+                        style: {
+                          textAnchor: "middle",
+                          fill: "var(--chart-label)",
+                          fontSize: 12,
+                        },
+                      }}
                     />
                     <ChartTooltip
                       cursor={false}
