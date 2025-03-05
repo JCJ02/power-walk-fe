@@ -1,15 +1,16 @@
 export type Battery = {
     id: number;
     batteryPercentage?: string,
-    current?: string,
+    batteryVoltage?: string,
     createdAt: Date;
     updatedAt: Date;
     deleteAt: Date;
 }
 
-export type BatteryPercentageResponse = {
+export type BatteryResponse = {
     data: {
-        batteryPercentage: Battery;
+        batteryPercentage: string,
+        batteryVoltage: string
     };
     message?: string;
     code?: number;
