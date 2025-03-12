@@ -56,6 +56,10 @@ const Dashboard = () => {
       label: "Student",
       color: "hsl(var(--chart-1))",
     },
+    // rfid_uid: {
+    //   label: "Student",
+    //   color: "hsl(var(--chart-1))",
+    // },
   } satisfies ChartConfig;
 
   useEffect(() => {
@@ -102,7 +106,7 @@ const Dashboard = () => {
                 }`}
               </h1>
             ) : batteryData ? (
-              <div className="flex flex-col 2xl:flex-row items-center gap-2">
+              <div className="flex flex-col 2xl:flex-row justify-center items-center gap-2">
                 <div className="flex flex-col items-center gap-2">
                   <h1 className="text-xs md:text-md lg:text-lg text-[#385A65] text-center font-bold">
                     BATTERY PERCENTAGE
@@ -197,6 +201,7 @@ const Dashboard = () => {
                   <XAxis
                     className="pr-3"
                     dataKey="date_added"
+                    // dataKey="createdAt"
                     tickLine={false}
                     axisLine={false}
                     tickMargin={8}
@@ -233,6 +238,7 @@ const Dashboard = () => {
                   />
                   <Line
                     dataKey="uid2"
+                    // dataKey="rfid_uid"
                     type="linear"
                     stroke="#385A65"
                     strokeWidth={2}

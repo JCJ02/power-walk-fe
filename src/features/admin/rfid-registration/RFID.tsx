@@ -12,7 +12,7 @@ const RFID = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit] = useState(10);
+  const [limit] = useState(50);
 
   const { RFIDData, isRFIDLoading, isRFIDError, RFIDError } = useFetchRFIDs(
     searchQuery,
