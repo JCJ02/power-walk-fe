@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import BatteryGauge from "react-battery-gauge";
 import useFetchElectricityGenerated from "./hooks/useFetchEletricityGenerated";
 import useFetchElectricityConsumption from "./hooks/useFetchElectricityConsumption";
@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
@@ -17,17 +18,21 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "../../../components/ui/chart";
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import useDailyUsage from "./hooks/useDailyUsage";
 import useFetchBattery from "./hooks/useFetchBattery";
+import useElectricityMeter from "./hooks/useElectricityMeter";
 
 const Dashboard = () => {
   const UseQueryClient = useQueryClient();
+
+  const [batterySize, setBatterySize] = useState(144);
 
   const handleRefreshButton = () => {
     UseQueryClient.invalidateQueries({ queryKey: ["battery-percentage"] });
     UseQueryClient.invalidateQueries({ queryKey: ["electricity-generated"] });
     UseQueryClient.invalidateQueries({ queryKey: ["electricity-consumption"] });
+    UseQueryClient.invalidateQueries({ queryKey: ["electricity-meter"] });
     UseQueryClient.invalidateQueries({ queryKey: ["daily-usage"] });
   };
 
@@ -51,16 +56,25 @@ const Dashboard = () => {
   const { historyData, historyLoading, isHistoryError, historyError } =
     useDailyUsage();
 
+  const { electricityMeterData, electricityMeterLoading, isElectricityMeterError, electricityMeterError } = useElectricityMeter();
+
   const chartConfig = {
-    uid2: {
+    rfid_uid: {
       label: "Student",
       color: "hsl(var(--chart-1))",
     },
-    // rfid_uid: {
-    //   label: "Student",
-    //   color: "hsl(var(--chart-1))",
-    // },
   } satisfies ChartConfig;
+
+  const barChartConfig = {
+    totalElectricityGeneratedToday: {
+      label: "Electricty Generated/Voltage",
+      color: "hsl(var(--chart-1))",
+    },
+    totalElectricityConsumptionToday: {
+      label: "Electricity Consumption/Watt-Hour",
+      color: "hsl(var(--chart-2))",
+    },
+  } satisfies ChartConfig
 
   useEffect(() => {
     document.title = "Dashboard - Power Walk Technology";
@@ -69,6 +83,21 @@ const Dashboard = () => {
     }, 300);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const updateSize = () => {
+      setBatterySize(window.innerWidth < 1536 ? 144 : 200);
+    };
+
+    //INITIAL SIZE SET
+    updateSize();
+
+    // LISTEN FOR WINDOWS RESIZE
+    window.addEventListener("resize", updateSize);
+
+    // CLEAN UP EVENT LISTENER
+    return () => window.removeEventListener("resize", updateSize);
+  }, [])
   return (
     <>
       <div className="flex flex-col items-start gap-5 font-poppins py-5 pl-6 lg:pl-8 pr-6 lg:pr-10 overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-screen w-full">
@@ -90,7 +119,7 @@ const Dashboard = () => {
                     animated
                     orientation="vertical"
                     value={0}
-                    size={200}
+                    size={batterySize}
                     chargingStartValue={1}
                     maxValue={100}
                   />
@@ -101,9 +130,8 @@ const Dashboard = () => {
               </div>
             ) : isBatteryError ? (
               <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
-                {`Error: ${
-                  batteryError?.message || "An Unknown Error Occurred."
-                }`}
+                {`Error: ${batteryError?.message || "An Unknown Error Occurred."
+                  }`}
               </h1>
             ) : batteryData ? (
               <div className="flex flex-col 2xl:flex-row justify-center items-center gap-2">
@@ -115,7 +143,7 @@ const Dashboard = () => {
                     animated
                     orientation="vertical"
                     value={Number(batteryData.data.batteryPercentage)}
-                    size={200}
+                    size={batterySize}
                     chargingStartValue={1}
                     maxValue={100}
                   />
@@ -132,7 +160,7 @@ const Dashboard = () => {
               </div>
             ) : null}
           </div>
-          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[400px] w-full">
+          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[360px] w-full">
             <h1 className="text-xs md:text-md lg:text-lg text-[#385A65] text-center font-bold">
               ELECTRICITY GENERATED
             </h1>
@@ -142,10 +170,9 @@ const Dashboard = () => {
               </label>
             ) : isElectricityGeneratedError ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-lg py-2 px-5 rounded-sm">
-                {`Error: ${
-                  electricityGeneratedError?.message ||
+                {`Error: ${electricityGeneratedError?.message ||
                   "An Unknown Error Occurred."
-                }`}
+                  }`}
               </label>
             ) : electricityConsumptionData ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-lg py-2 px-5 rounded-sm">
@@ -153,7 +180,7 @@ const Dashboard = () => {
               </label>
             ) : null}
           </div>
-          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[400px] w-full">
+          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[360px] w-full">
             <h1 className="text-xs md:text-md lg:text-lg text-[#385A65] text-center font-bold">
               ELECTRICITY CONSUMPTION
             </h1>
@@ -163,10 +190,9 @@ const Dashboard = () => {
               </label>
             ) : isElectricityConsumptionDataError ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-lg py-2 px-5 rounded-sm">
-                {`Error: ${
-                  electricityConsumptionDataError?.message ||
+                {`Error: ${electricityConsumptionDataError?.message ||
                   "An Unknown Error Occurred."
-                }`}
+                  }`}
               </label>
             ) : electricityConsumptionData ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-lg py-2 px-5 rounded-sm">
@@ -175,33 +201,33 @@ const Dashboard = () => {
             ) : null}
           </div>
         </div>
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="text-[#385A65]">Daily Usage</CardTitle>
-            <CardDescription className="text-justify">
-              The number of students who used the Charging Station per day.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {historyLoading ? (
-              <p>Loading...</p>
-            ) : isHistoryError ? (
-              <p className="text-red-500 font-semibold">
-                {`Error: ${
-                  historyError?.message || "An unknown error occurred."
-                }`}
-              </p>
-            ) : historyData?.length > 0 ? (
-              <ChartContainer config={chartConfig} className="h-[240px] w-full">
-                <LineChart
-                  data={historyData}
+        <div className="flex flex-col lg:flex-row items-center gap-4 w-full">
+          {/* DAILY USAGE - NUMBER OF STUDENTS PER DAY */}
+          <Card className="w-full lg:w-1/2">
+            <CardHeader>
+              <CardTitle className="text-[#385A65]">Daily Usage</CardTitle>
+              <CardDescription className="text-justify">
+                The number of students who used the Charging Station per day.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {historyLoading ? (
+                <p>Loading...</p>
+              ) : isHistoryError ? (
+                <p className="text-red-500 font-semibold">
+                  {`Error: ${historyError?.message || "An unknown error occurred."
+                    }`}
+                </p>
+              ) : historyData?.length > 0 ? (
+                <ChartContainer config={chartConfig} className="h-[280px] w-full">
+                  <LineChart
+                    data={historyData}
                   // margin={{ left: -24, right: 12 }}
                 >
                   <CartesianGrid vertical={false} />
                   <XAxis
                     className="pr-3"
                     dataKey="date_added"
-                    // dataKey="createdAt"
                     tickLine={false}
                     axisLine={false}
                     tickMargin={8}
@@ -238,7 +264,6 @@ const Dashboard = () => {
                   />
                   <Line
                     dataKey="uid2"
-                    // dataKey="rfid_uid"
                     type="linear"
                     stroke="#385A65"
                     strokeWidth={2}
