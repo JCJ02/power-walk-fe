@@ -17,8 +17,10 @@ export type RFIDListResponse = {
 
 export type HistoryType = {
     id: number,
-    uid2: string,
-    date_added: string
+    rfid_uid: string,
+    createdAt: string,
+    updatedAt: Date,
+    deletedAt: Date
 }
 
 export type HistoryResponse = {

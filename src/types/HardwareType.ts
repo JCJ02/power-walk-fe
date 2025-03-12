@@ -40,3 +40,16 @@ export type ElectricityConsumptionResponse = {
     message?: string;
     code?: number;
 }
+
+export type ElectricityMeter = {
+    id: number,
+    totalElectricityGeneratedToday: number | null,
+    totalElectricityConsumptionToday: number | null,
+    date: Date,
+}
+
+export type ElectricityMeterResponse = {
+    data: ElectricityMeter[];
+    message?: string;
+    code?: number;
+}
