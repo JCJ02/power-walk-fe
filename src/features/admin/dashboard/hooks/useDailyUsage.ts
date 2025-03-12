@@ -19,11 +19,11 @@ const useDailyUsage = () => {
         `${baseUrl}api/rfid/history`,
     );
 
-    // Ensure data is formatted correctly for the chart
+    // ENSURE DATA IS FORMMATED CORRECTLY FOR THE CHART
     const formattedData = Array.isArray(historyData?.data)
         ? historyData.data.map((entry) => ({
-            date_added: entry.date_added,  // Extract the correct date field
-            uid2: entry.uid2,  // Placeholder, update this logic based on actual usage count
+            createdAt: entry.createdAt,
+            rfid_uid: entry.rfid_uid,
         })) 
         : [];
 
