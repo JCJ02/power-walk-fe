@@ -25,15 +25,18 @@ const useElectricityMeter = (fromDate?: string, toDate?: string) => {
     );
 
     // ENSURE DATA IS FORMATTED CORRECTLY FOR THE CHART
-    const formattedData = Array.isArray(electricityMeterData?.data)
-        ? electricityMeterData.data.map((entry) => ({
-            date: entry.date,
-            totalElectricityGeneratedToday: entry.totalElectricityGeneratedToday,
-            totalElectricityConsumptionToday: entry.totalElectricityConsumptionToday
-        }))
-        : [];
+    // const formattedData = Array.isArray(electricityMeterData?.data)
+    //     ? electricityMeterData.data.map((entry) => ({
+    //         date: entry.date,
+    //         totalElectricityGeneratedToday: entry.totalElectricityGeneratedToday,
+    //         totalElectricityConsumptionToday: entry.totalElectricityConsumptionToday
+    //     }))
+    //     : [];
+    const formattedData = electricityMeterData?.data?.electricityMeter || [];
+    const totalElectricityGenerated = electricityMeterData?.data?.totalElectricityGenerated || 0;
+    const totalElectricityConsumption = electricityMeterData?.data?.totalElectricityConsumption || 0;
 
-    return { electricityMeterData: formattedData, electricityMeterLoading, isElectricityMeterError, electricityMeterError };
+    return { electricityMeterData: formattedData, totalElectricityGenerated, totalElectricityConsumption, electricityMeterLoading, isElectricityMeterError, electricityMeterError };
 };
 
 export default useElectricityMeter;

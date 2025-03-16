@@ -22,7 +22,8 @@ import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from "rec
 import useDailyUsage from "./hooks/useDailyUsage";
 import useFetchBattery from "./hooks/useFetchBattery";
 import useElectricityMeter from "./hooks/useElectricityMeter";
-import { Input } from "../../../components/ui/input";
+import { pdf } from "@react-pdf/renderer";
+import GenerateReportsPDF from "./components/GenerateReportsPDF";
 
 const Dashboard = () => {
   const UseQueryClient = useQueryClient();
@@ -58,10 +59,39 @@ const Dashboard = () => {
     electricityConsumptionDataError,
   } = useFetchElectricityConsumption();
 
-  const { historyData, historyLoading, isHistoryError, historyError } =
+  const { historyData, totalRFIDUID, historyLoading, isHistoryError, historyError } =
     useDailyUsage(dailyUsageFromDate, dailyUsageToDate);
 
-  const { electricityMeterData, electricityMeterLoading, isElectricityMeterError, electricityMeterError } = useElectricityMeter(electricityMeterFromDate, electricityMeterToDate);
+  const { electricityMeterData, totalElectricityGenerated, totalElectricityConsumption, electricityMeterLoading, isElectricityMeterError, electricityMeterError } = useElectricityMeter(electricityMeterFromDate, electricityMeterToDate);
+
+  const handleGenerateReportsPDF = async () => {
+    try {
+      const blob = await pdf(
+        <GenerateReportsPDF
+          dailyUsageData={historyData} // DATA FOR CHART 1 (DAILY USAGE)
+          electricityMeterData={electricityMeterData} // DATA FOR CHART 2 (ELECTRICITY METER)
+          isLoading={historyLoading || electricityMeterLoading} // LOADING STATE
+          isError={isHistoryError || isElectricityMeterError} // ERROR STATE
+          error={historyError || electricityMeterError} // ERROR MESSAGE
+          formattedDate={new Date().toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })} // CURRENT DATE
+        />
+      ).toBlob();
+      // const link = document.createElement("a");
+      // link.href = URL.createObjectURL(blob);
+      // link.download = `Invoice - ${client?.companyName || "document"}.pdf`;
+      // document.body.appendChild(link);
+      // link.click();
+      // document.body.removeChild(link);
+      const pdfUrl = URL.createObjectURL(blob);
+      window.open(pdfUrl, "_blank");
+    } catch (error) {
+      console.error(`Failed to Generate the PDF: ${error}`);
+    }
+  };
 
   const chartConfig = {
     rfid_uid: {
@@ -110,6 +140,9 @@ const Dashboard = () => {
           <h1 className="text-xl xl:text-3xl font-semibold">Dashboard</h1>
           <Button className="hidden" onClick={handleRefreshButton}>
             Refresh
+          </Button>
+          <Button className="hover:bg-[#FFE95F] hover:text-[#385A65] border-2 border-[#385A65] ease-in-out duration-300 py-1 px-4 rounded-md" onClick={handleGenerateReportsPDF}>
+            Generate Reports
           </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 w-full">
@@ -207,9 +240,10 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="flex flex-col lg:flex-row items-start gap-4 w-full">
+
           {/* DAILY USAGE - NUMBER OF STUDENTS PER DAY */}
           <Card className="w-full lg:w-1/2">
-            <CardHeader className="flex flex-col xl:flex-row justify-between items-start gap-2">
+            <CardHeader className="flex flex-col xl:flex-row justify-between items-start gap-5">
               <div className="flex flex-col items-start gap-1 w-full">
                 <CardTitle className="text-[#385A65]">Daily Usage</CardTitle>
                 <CardDescription className="text-justify">
@@ -218,23 +252,23 @@ const Dashboard = () => {
               </div>
 
               {/* DATE FILTERS */}
-              <div className="flex flex-col lg:flex-row justify-end items-start gap-1 w-full">
-                <label className="text-xs">
+              <div className="flex flex-row justify-end items-start gap-1 w-full">
+                <label className="text-xs w-full">
                   From:
-                  <Input
+                  <input
                     type="date"
                     value={dailyUsageFromDate}
                     onChange={(event) => setDailyUsageFromDate(event.target.value)}
-                    className="text-xs md:text-xs lg:text-xs border p-1 rounded"
+                    className="text-xs md:text-xs lg:text-xs border p-1 rounded w-full"
                   />
                 </label>
-                <label className="text-xs">
+                <label className="text-xs w-full">
                   To:
-                  <Input
+                  <input
                     type="date"
                     value={dailyUsageToDate}
                     onChange={(event) => setDailyUsageToDate(event.target.value)}
-                    className="text-xs md:text-xs lg:text-xs border p-1 rounded"
+                    className="text-xs md:text-xs lg:text-xs border p-1 rounded w-full"
                   />
                 </label>
               </div>
@@ -248,7 +282,7 @@ const Dashboard = () => {
                     }`}
                 </p>
               ) : historyData?.length > 0 ? (
-                <ChartContainer config={chartConfig} className="h-[280px] w-full">
+                <ChartContainer config={chartConfig} className="h-[240px] w-full">
                   <LineChart
                     data={historyData}
                   // margin={{ left: -24, right: 12 }}
@@ -308,11 +342,19 @@ const Dashboard = () => {
                 </p>
               )}
             </CardContent>
+            <CardFooter className="flex-col items-start text-sm">
+              <label className="font-medium text-sm">
+                According to the Chart:
+              </label>
+              <label className="text-xs">
+                The Total Number of Students is <b>{totalRFIDUID}</b>.
+              </label>
+            </CardFooter>
           </Card>
 
           {/* ELECTRICITY GENERATED AND CONSUMPTION PER DAY */}
           <Card className="w-full lg:w-1/2">
-            <CardHeader className="flex flex-col xl:flex-row justify-between items-start gap-2">
+            <CardHeader className="flex flex-col xl:flex-row justify-between items-start gap-2 lg:gap-5">
               <div className="flex flex-col items-start gap-1 w-full">
                 <CardTitle className="text-[#385A65]">Electricity Meter</CardTitle>
                 <CardDescription className="text-justify">
@@ -320,23 +362,23 @@ const Dashboard = () => {
                 </CardDescription>
               </div>
               {/* DATE FILTERS */}
-              <div className="flex flex-col lg:flex-row justify-end items-start gap-1 w-full">
-                <label className="text-xs">
+              <div className="flex flex-row justify-end items-start gap-1 w-full">
+                <label className="text-xs w-full">
                   From:
-                  <Input
+                  <input
                     type="date"
                     value={electricityMeterFromDate}
                     onChange={(event) => setElectricityMeterFromDate(event.target.value)}
-                    className="text-xs md:text-xs lg:text-xs border p-1 rounded"
+                    className="text-xs md:text-xs lg:text-xs border p-1 rounded w-full"
                   />
                 </label>
-                <label className="text-xs">
+                <label className="text-xs w-full">
                   To:
-                  <Input
+                  <input
                     type="date"
                     value={electricityMeterToDate}
                     onChange={(event) => setElectricityMeterToToDate(event.target.value)}
-                    className="text-xs md:text-xs lg:text-xs border p-1 rounded"
+                    className="text-xs md:text-xs lg:text-xs border p-1 rounded w-full"
                   />
                 </label>
               </div>
@@ -350,7 +392,7 @@ const Dashboard = () => {
                     }`}
                 </p>
               ) : electricityMeterData?.length > 0 ? (
-                <ChartContainer config={barChartConfig} className="h-[240px] w-full">
+                <ChartContainer config={barChartConfig} className="h-[250px] w-full">
                   <BarChart
                     accessibilityLayer
                     data={electricityMeterData}
@@ -405,10 +447,13 @@ const Dashboard = () => {
                 </p>
               )}
             </CardContent>
-            <CardFooter className="flex-col items-start gap-2 text-sm">
-              <div className="flex gap-2 font-medium leading-none">
-                Electricity Generated/Voltage & Consumption/Watt-Hour
-              </div>
+            <CardFooter className="flex-col items-start text-sm">
+              <label className="font-medium text-sm">
+                According to the Chart:
+              </label>
+              <label className="text-xs">
+                The Total Electricity Generated is <b>{totalElectricityGenerated.toFixed(2)} Voltage</b> and the Consumption is <b>{totalElectricityConsumption} Watt-Hour</b>.
+              </label>
             </CardFooter>
           </Card>
         </div>
