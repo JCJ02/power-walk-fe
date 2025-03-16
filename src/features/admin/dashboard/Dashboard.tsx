@@ -298,7 +298,7 @@ const Dashboard = () => {
                     }`}
                 </p>
               ) : electricityMeterData?.length > 0 ? (
-                <ChartContainer config={barChartConfig} className="h-[220px] w-full">
+                <ChartContainer config={barChartConfig} className="h-[240px] w-full">
                   <BarChart
                     accessibilityLayer
                     data={electricityMeterData}
