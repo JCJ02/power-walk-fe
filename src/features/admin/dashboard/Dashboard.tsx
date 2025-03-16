@@ -30,11 +30,18 @@ import {
 import useDailyUsage from "./hooks/useDailyUsage";
 import useFetchBattery from "./hooks/useFetchBattery";
 import useElectricityMeter from "./hooks/useElectricityMeter";
+import { pdf } from "@react-pdf/renderer";
+import GenerateReportsPDF from "./components/GenerateReportsPDF";
+import html2canvas from "html2canvas";
 
 const Dashboard = () => {
   const UseQueryClient = useQueryClient();
 
   const [batterySize, setBatterySize] = useState(144);
+  const [electricityMeterFromDate, setElectricityMeterFromDate] = useState("");
+  const [electricityMeterToDate, setElectricityMeterToToDate] = useState("");
+  const [dailyUsageFromDate, setDailyUsageFromDate] = useState("");
+  const [dailyUsageToDate, setDailyUsageToDate] = useState("");
 
   const handleRefreshButton = () => {
     UseQueryClient.invalidateQueries({ queryKey: ["battery-percentage"] });
@@ -61,15 +68,10 @@ const Dashboard = () => {
     electricityConsumptionDataError,
   } = useFetchElectricityConsumption();
 
-  const { historyData, historyLoading, isHistoryError, historyError } =
-    useDailyUsage();
+  const { historyData, totalRFIDUID, historyLoading, isHistoryError, historyError } =
+    useDailyUsage(dailyUsageFromDate, dailyUsageToDate);
 
-  const {
-    electricityMeterData,
-    electricityMeterLoading,
-    isElectricityMeterError,
-    electricityMeterError,
-  } = useElectricityMeter();
+  const { electricityMeterData, electricityMeterLoading, isElectricityMeterError, electricityMeterError } = useElectricityMeter();
 
   const chartConfig = {
     rfid_uid: {
@@ -119,9 +121,12 @@ const Dashboard = () => {
           <Button className="hidden" onClick={handleRefreshButton}>
             Refresh
           </Button>
+          <Button className="hover:bg-[#FFE95F] hover:text-[#385A65] border-2 border-[#385A65] ease-in-out duration-300 py-1 px-4 rounded-md" onClick={handleGenerateReportsPDF}>
+            Generate Reports
+          </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 w-full">
-          <div className="border-2 flex flex-col items-center gap-2 py-8 px-5 rounded-md w-full">
+          <div className="border-2 flex flex-col items-center gap-2 py-8 px-5 rounded-xl w-full">
             {batteryLoading ? (
               <div className="flex flex-col lg:flex-row items-center gap-2">
                 <div className="flex flex-col items-center gap-2">
@@ -143,9 +148,8 @@ const Dashboard = () => {
               </div>
             ) : isBatteryError ? (
               <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
-                {`Error: ${
-                  batteryError?.message || "An Unknown Error Occurred."
-                }`}
+                {`Error: ${batteryError?.message || "An Unknown Error Occurred."
+                  }`}
               </h1>
             ) : batteryData ? (
               <div className="flex flex-col 2xl:flex-row items-center gap-2">
@@ -174,7 +178,7 @@ const Dashboard = () => {
               </div>
             ) : null}
           </div>
-          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[360px] w-full">
+          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 rounded-xl h-[360px] w-full">
             <h1 className="text-xs md:text-md lg:text-lg text-[#385A65] text-center font-bold">
               ELECTRICITY GENERATED
             </h1>
@@ -184,10 +188,9 @@ const Dashboard = () => {
               </label>
             ) : isElectricityGeneratedError ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-lg py-2 px-5 rounded-sm">
-                {`Error: ${
-                  electricityGeneratedError?.message ||
+                {`Error: ${electricityGeneratedError?.message ||
                   "An Unknown Error Occurred."
-                }`}
+                  }`}
               </label>
             ) : electricityConsumptionData ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-lg py-2 px-5 rounded-sm">
@@ -195,7 +198,7 @@ const Dashboard = () => {
               </label>
             ) : null}
           </div>
-          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[360px] w-full">
+          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 rounded-xl h-[360px] w-full">
             <h1 className="text-xs md:text-md lg:text-lg text-[#385A65] text-center font-bold">
               ELECTRICITY CONSUMPTION
             </h1>
@@ -205,10 +208,9 @@ const Dashboard = () => {
               </label>
             ) : isElectricityConsumptionDataError ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-lg py-2 px-5 rounded-sm">
-                {`Error: ${
-                  electricityConsumptionDataError?.message ||
+                {`Error: ${electricityConsumptionDataError?.message ||
                   "An Unknown Error Occurred."
-                }`}
+                  }`}
               </label>
             ) : electricityConsumptionData ? (
               <label className="bg-[#385A65] text-white text-xs md:text-md lg:text-lg py-2 px-5 rounded-sm">
@@ -217,32 +219,53 @@ const Dashboard = () => {
             ) : null}
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row items-center gap-4 w-full">
+        <div className="flex flex-col lg:flex-row items-start gap-4 w-full">
+
           {/* DAILY USAGE - NUMBER OF STUDENTS PER DAY */}
           <Card className="w-full lg:w-1/2">
-            <CardHeader>
-              <CardTitle className="text-[#385A65]">Daily Usage</CardTitle>
-              <CardDescription className="text-justify">
-                The number of students who used the Charging Station per day.
-              </CardDescription>
+            <CardHeader className="flex flex-col xl:flex-row justify-between items-start gap-5">
+              <div className="flex flex-col items-start gap-1 w-full">
+                <CardTitle className="text-[#385A65]">Daily Usage</CardTitle>
+                <CardDescription className="text-justify">
+                  The number of students who used the Charging Station per day.
+                </CardDescription>
+              </div>
+
+              {/* DATE FILTERS */}
+              <div className="flex flex-row justify-end items-start gap-1 w-full">
+                <label className="text-xs w-full">
+                  From:
+                  <input
+                    type="date"
+                    value={dailyUsageFromDate}
+                    onChange={(event) => setDailyUsageFromDate(event.target.value)}
+                    className="text-xs md:text-xs lg:text-xs border p-1 rounded w-full"
+                  />
+                </label>
+                <label className="text-xs w-full">
+                  To:
+                  <input
+                    type="date"
+                    value={dailyUsageToDate}
+                    onChange={(event) => setDailyUsageToDate(event.target.value)}
+                    className="text-xs md:text-xs lg:text-xs border p-1 rounded w-full"
+                  />
+                </label>
+              </div>
             </CardHeader>
             <CardContent>
               {historyLoading ? (
                 <p>Loading...</p>
               ) : isHistoryError ? (
                 <p className="text-red-500 font-semibold">
-                  {`Error: ${
-                    historyError?.message || "An unknown error occurred."
-                  }`}
+                  {`Error: ${historyError?.message || "An unknown error occurred."
+                    }`}
                 </p>
               ) : historyData?.length > 0 ? (
-                <ChartContainer
-                  config={chartConfig}
-                  className="h-[280px] w-full"
-                >
+                <ChartContainer config={chartConfig} className="h-[280px] w-full">
                   <LineChart
                     data={historyData}
-                    // margin={{ left: -24, right: 12 }}
+                  // margin={{ left: -24, right: 12 }}
                   >
                     <CartesianGrid vertical={false} />
                     <XAxis
@@ -299,14 +322,20 @@ const Dashboard = () => {
                 </p>
               )}
             </CardContent>
+            <CardFooter className="flex-col items-start text-sm">
+              <label className="font-medium text-sm">
+                According to the Chart:
+              </label>
+              <label className="text-xs">
+                The Total Number of Students is <b>{totalRFIDUID}</b>.
+              </label>
+            </CardFooter>
           </Card>
 
           {/* ELECTRICITY GENERATED AND CONSUMPTION PER DAY */}
           <Card className="w-full lg:w-1/2">
             <CardHeader>
-              <CardTitle className="text-[#385A65]">
-                Electricity Meter
-              </CardTitle>
+              <CardTitle className="text-[#385A65]">Electricity Meter</CardTitle>
               <CardDescription className="text-justify">
                 The Daily Electricity Generated and Consumption.
               </CardDescription>
@@ -316,20 +345,16 @@ const Dashboard = () => {
                 <p>Loading...</p>
               ) : isElectricityMeterError ? (
                 <p className="text-red-500 font-semibold">
-                  {`Error: ${
-                    electricityMeterError?.message ||
+                  {`Error: ${electricityMeterError?.message ||
                     "An unknown error occurred."
-                  }`}
+                    }`}
                 </p>
               ) : electricityMeterData?.length > 0 ? (
-                <ChartContainer
-                  config={barChartConfig}
-                  className="h-[220px] w-full"
-                >
+                <ChartContainer config={barChartConfig} className="h-[220px] w-full">
                   <BarChart
                     accessibilityLayer
                     data={electricityMeterData}
-                    // margin={{ left: -24, right: 12 }}
+                  // margin={{ left: -24, right: 12 }}
                   >
                     <CartesianGrid vertical={false} />
                     <XAxis
@@ -370,28 +395,23 @@ const Dashboard = () => {
                       cursor={false}
                       content={<ChartTooltipContent hideLabel />}
                     />
-                    <Bar
-                      dataKey="totalElectricityGeneratedToday"
-                      fill="#385A65"
-                      radius={4}
-                    />
-                    <Bar
-                      dataKey="totalElectricityConsumptionToday"
-                      fill="#FFE95F"
-                      radius={4}
-                    />
+                    <Bar dataKey="totalElectricityGeneratedToday" fill="#385A65" radius={4} />
+                    <Bar dataKey="totalElectricityConsumptionToday" fill="#FFE95F" radius={4} />
                   </BarChart>
                 </ChartContainer>
               ) : (
                 <p className="text-gray-500">
-                  No Data Available for Daily Usage.
+                  No Data Available for Electricity Meter
                 </p>
               )}
             </CardContent>
-            <CardFooter className="flex-col items-start gap-2 text-sm">
-              <div className="flex gap-2 font-medium leading-none">
-                Electricity Generated/Voltage & Consumption/Watt-Hour
-              </div>
+            <CardFooter className="flex-col items-start text-sm">
+              <label className="font-medium text-sm">
+                According to the Chart:
+              </label>
+              <label className="text-xs">
+                The Total Electricity Generated is <b>{totalElectricityGenerated.toFixed(2)} Voltage</b> and the Consumption is <b>{totalElectricityConsumption} Watt-Hour</b>.
+              </label>
             </CardFooter>
           </Card>
         </div>
