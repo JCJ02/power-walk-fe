@@ -537,7 +537,8 @@ const Dashboard = () => {
               <label className="text-xs">
                 The Total Electricity Generated is{" "}
                 <b>{totalElectricityGenerated.toFixed(2)} Voltage</b> and the
-                Consumption is <b>{totalElectricityConsumption} Watt-Hour</b>.
+                Consumption is{" "}
+                <b>{totalElectricityConsumption.toFixed(2)} Watt-Hour</b>.
               </label>
             </CardFooter>
           </Card>
