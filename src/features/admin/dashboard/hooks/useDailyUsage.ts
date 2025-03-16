@@ -26,12 +26,14 @@ const useDailyUsage = (fromDate?: string, toDate?: string) => {
     );
 
     // ENSURE DATA IS FORMATTED CORRECTLY FOR THE CHART
-    const formattedData = Array.isArray(historyData?.data)
-        ? historyData.data.map((entry) => ({
-            createdAt: entry.createdAt,
-            rfid_uid: entry.rfid_uid,
-        }))
-        : [];
+    // const formattedData = Array.isArray(historyData?.data)
+    //     ? historyData.data.map((entry) => ({
+    //         createdAt: entry.createdAt,
+    //         rfid_uid: entry.rfid_uid,
+    //     }))
+    //     : [];
+    const formattedData = historyData?.data?.rfids || [];
+    const totalRFIDUID = historyData?.data?.totalRFIDUID || 0;
 
     return { historyData: formattedData, totalRFIDUID, historyLoading, isHistoryError, historyError };
 };
