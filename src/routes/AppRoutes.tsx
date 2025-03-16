@@ -8,6 +8,7 @@ import Admin from "../features/admin/Admin";
 import PrivateRoute from "./PrivateRoute";
 import Settings from "../features/admin/settings/Settings";
 import RFID from "../features/admin/rfid-registration/RFID";
+// import Test from "../features/__test__/Test";
 
 const AppRoutes = () => {
   return (
@@ -15,6 +16,8 @@ const AppRoutes = () => {
       <Routes>
         <Route path="*" element={<NotFound />} />
         <Route path="/log-in" element={<LogIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        {/* <Route path="/generate-reports-pdf" element={<Test />} /> */}
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Admin />}>
             <Route index element={<Dashboard />} />
@@ -24,7 +27,6 @@ const AppRoutes = () => {
             />
             <Route path="rfid" element={<RFID />} />
             <Route path="settings" element={<Settings />}></Route>
-            <Route path="/sign-up" element={<SignUp />} />
           </Route>
         </Route>
       </Routes>
