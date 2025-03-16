@@ -304,7 +304,7 @@ const Dashboard = () => {
               </div>
 
               {/* DATE FILTERS */}
-              <div className="flex flex-row justify-end items-start gap-1 w-full">
+              <div className="flex flex-col lg:flex-row justify-end items-start gap-1 w-full">
                 <label className="text-xs w-full">
                   From:
                   <input
@@ -426,7 +426,7 @@ const Dashboard = () => {
                 </CardDescription>
               </div>
               {/* DATE FILTERS */}
-              <div className="flex flex-row justify-end items-start gap-1 w-full">
+              <div className="flex flex-col lg:flex-row justify-end items-start gap-1 w-full">
                 <label className="text-xs w-full">
                   From:
                   <input
