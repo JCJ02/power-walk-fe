@@ -28,14 +28,10 @@ const Dashboard = () => {
   const UseQueryClient = useQueryClient();
 
   const [batterySize, setBatterySize] = useState(144);
-  // const [fromDate, setFromDate] = useState<string>(
-  //   new Date().toISOString().split("T")[0]
-  // );
-  // const [toDate, setToDate] = useState<string>(
-  //   new Date().toISOString().split("T")[0]
-  // );
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  const [electricityMeterFromDate, setElectricityMeterFromDate] = useState("");
+  const [electricityMeterToDate, setElectricityMeterToToDate] = useState("");
+  const [dailyUsageFromDate, setDailyUsageFromDate] = useState("");
+  const [dailyUsageToDate, setDailyUsageToDate] = useState("");
 
   const handleRefreshButton = () => {
     UseQueryClient.invalidateQueries({ queryKey: ["battery-percentage"] });
@@ -63,9 +59,9 @@ const Dashboard = () => {
   } = useFetchElectricityConsumption();
 
   const { historyData, historyLoading, isHistoryError, historyError } =
-    useDailyUsage(fromDate, toDate);
+    useDailyUsage(dailyUsageFromDate, dailyUsageToDate);
 
-  const { electricityMeterData, electricityMeterLoading, isElectricityMeterError, electricityMeterError } = useElectricityMeter();
+  const { electricityMeterData, electricityMeterLoading, isElectricityMeterError, electricityMeterError } = useElectricityMeter(electricityMeterFromDate, electricityMeterToDate);
 
   const chartConfig = {
     rfid_uid: {
@@ -117,7 +113,7 @@ const Dashboard = () => {
           </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 w-full">
-          <div className="border-2 flex flex-col items-center gap-2 py-8 px-5 rounded-md w-full">
+          <div className="border-2 flex flex-col items-center gap-2 py-8 px-5 rounded-xl w-full">
             {batteryLoading ? (
               <div className="flex flex-col lg:flex-row items-center gap-2">
                 <div className="flex flex-col items-center gap-2">
@@ -169,7 +165,7 @@ const Dashboard = () => {
               </div>
             ) : null}
           </div>
-          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[360px] w-full">
+          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 rounded-xl h-[360px] w-full">
             <h1 className="text-xs md:text-md lg:text-lg text-[#385A65] text-center font-bold">
               ELECTRICITY GENERATED
             </h1>
@@ -189,7 +185,7 @@ const Dashboard = () => {
               </label>
             ) : null}
           </div>
-          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 h-[360px] w-full">
+          <div className="border-2 flex flex-col justify-center items-center gap-5 px-2 py-10 lg:py-0 rounded-xl h-[360px] w-full">
             <h1 className="text-xs md:text-md lg:text-lg text-[#385A65] text-center font-bold">
               ELECTRICITY CONSUMPTION
             </h1>
@@ -210,11 +206,11 @@ const Dashboard = () => {
             ) : null}
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row items-center gap-4 w-full">
+        <div className="flex flex-col lg:flex-row items-start gap-4 w-full">
           {/* DAILY USAGE - NUMBER OF STUDENTS PER DAY */}
           <Card className="w-full lg:w-1/2">
-            <CardHeader className="flex flex-row justify-between items-start gap-24">
-              <div>
+            <CardHeader className="flex flex-col xl:flex-row justify-between items-start gap-2">
+              <div className="flex flex-col items-start gap-1 w-full">
                 <CardTitle className="text-[#385A65]">Daily Usage</CardTitle>
                 <CardDescription className="text-justify">
                   The number of students who used the Charging Station per day.
@@ -222,13 +218,13 @@ const Dashboard = () => {
               </div>
 
               {/* DATE FILTERS */}
-              <div className="flex gap-1">
+              <div className="flex flex-col lg:flex-row justify-end items-start gap-1 w-full">
                 <label className="text-xs">
                   From:
                   <Input
                     type="date"
-                    value={fromDate}
-                    onChange={(event) => setFromDate(event.target.value)}
+                    value={dailyUsageFromDate}
+                    onChange={(event) => setDailyUsageFromDate(event.target.value)}
                     className="text-xs md:text-xs lg:text-xs border p-1 rounded"
                   />
                 </label>
@@ -236,8 +232,8 @@ const Dashboard = () => {
                   To:
                   <Input
                     type="date"
-                    value={toDate}
-                    onChange={(event) => setToDate(event.target.value)}
+                    value={dailyUsageToDate}
+                    onChange={(event) => setDailyUsageToDate(event.target.value)}
                     className="text-xs md:text-xs lg:text-xs border p-1 rounded"
                   />
                 </label>
@@ -316,11 +312,34 @@ const Dashboard = () => {
 
           {/* ELECTRICITY GENERATED AND CONSUMPTION PER DAY */}
           <Card className="w-full lg:w-1/2">
-            <CardHeader>
-              <CardTitle className="text-[#385A65]">Electricity Meter</CardTitle>
-              <CardDescription className="text-justify">
-                The Daily Electricity Generated and Consumption.
-              </CardDescription>
+            <CardHeader className="flex flex-col xl:flex-row justify-between items-start gap-2">
+              <div className="flex flex-col items-start gap-1 w-full">
+                <CardTitle className="text-[#385A65]">Electricity Meter</CardTitle>
+                <CardDescription className="text-justify">
+                  The Daily Electricity Generated and Consumption.
+                </CardDescription>
+              </div>
+              {/* DATE FILTERS */}
+              <div className="flex flex-col lg:flex-row justify-end items-start gap-1 w-full">
+                <label className="text-xs">
+                  From:
+                  <Input
+                    type="date"
+                    value={electricityMeterFromDate}
+                    onChange={(event) => setElectricityMeterFromDate(event.target.value)}
+                    className="text-xs md:text-xs lg:text-xs border p-1 rounded"
+                  />
+                </label>
+                <label className="text-xs">
+                  To:
+                  <Input
+                    type="date"
+                    value={electricityMeterToDate}
+                    onChange={(event) => setElectricityMeterToToDate(event.target.value)}
+                    className="text-xs md:text-xs lg:text-xs border p-1 rounded"
+                  />
+                </label>
+              </div>
             </CardHeader>
             <CardContent>
               {electricityMeterLoading ? (
@@ -382,7 +401,7 @@ const Dashboard = () => {
                 </ChartContainer>
               ) : (
                 <p className="text-gray-500">
-                  No Data Available for Daily Usage.
+                  No Data Available for Electricity Meter
                 </p>
               )}
             </CardContent>

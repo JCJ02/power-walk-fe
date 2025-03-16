@@ -3,10 +3,16 @@ import useFetch from "../../../../hooks/useFetch";
 import { ElectricityMeterResponse } from "../../../../types/HardwareType";
 import baseUrl from "../../../../utils/baseUrl";
 
-const useElectricityMeter = () => {
+const useElectricityMeter = (fromDate?: string, toDate?: string) => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     if (!token) navigate("/log-in");
+
+    // CONSTRUCT THE QUERY STRING DYNAMICALLY
+    const queryParams = [];
+    if (fromDate) queryParams.push(`from=${fromDate}`);
+    if (toDate) queryParams.push(`to=${toDate}`);
+    const queryString = queryParams.length ? `?${queryParams.join("&")}` : "";
 
     const {
         data: electricityMeterData,
@@ -15,7 +21,7 @@ const useElectricityMeter = () => {
         error: electricityMeterError
     } = useFetch<ElectricityMeterResponse>(
         "electricity-meter",
-        `${baseUrl}api/hardware/electricity-meter`,
+        `${baseUrl}api/hardware/electricity-meter${queryString}`,
     );
 
     // ENSURE DATA IS FORMATTED CORRECTLY FOR THE CHART
