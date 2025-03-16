@@ -22,7 +22,10 @@ export type HistoryType = {
 }
 
 export type HistoryResponse = {
-    data: HistoryType[];
+    data: {
+        rfids: HistoryType[]
+        totalRFIDUID: number;
+    };
     message?: string;
     code?: number;
 }

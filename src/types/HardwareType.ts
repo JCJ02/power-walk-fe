@@ -49,7 +49,11 @@ export type ElectricityMeter = {
 }
 
 export type ElectricityMeterResponse = {
-    data: ElectricityMeter[];
+    data: {
+        electricityMeter: ElectricityMeter[],
+        totalElectricityGenerated: number,
+        totalElectricityConsumption: number,
+    };
     message?: string;
     code?: number;
 }
