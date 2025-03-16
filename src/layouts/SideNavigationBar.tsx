@@ -60,8 +60,8 @@ const SideNavigationBar = () => {
                   <Link
                     className={
                       location.pathname === "/"
-                        ? "flex justify-center xl:justify-start items-center gap-2 bg-[#385A65] text-white py-3 xl:pl-2 rounded-md cursor-pointer w-full"
-                        : "flex justify-center xl:justify-start items-center gap-2 text-[#385A65] py-3 xl:pl-2 border-0 cursor-pointer w-full"
+                        ? "flex justify-center xl:justify-start items-center gap-2 bg-[#385A65] text-white py-3 xl:px-4 rounded-md cursor-pointer w-full"
+                        : "flex justify-center xl:justify-start items-center gap-2 text-[#385A65] py-3 xl:px-4 border-0 cursor-pointer w-full"
                     }
                     to={"/"}
                   >
@@ -120,8 +120,8 @@ const SideNavigationBar = () => {
                   <Link
                     className={
                       location.pathname === "/rfid"
-                        ? "flex justify-center xl:justify-start items-center gap-2 bg-[#385A65] text-white py-3 xl:pl-2 rounded-md cursor-pointer w-full"
-                        : "flex justify-center xl:justify-start items-center gap-2 text-[#385A65] py-3 xl:pl-2 border-0 cursor-pointer w-full"
+                        ? "flex justify-center xl:justify-start items-center gap-2 bg-[#385A65] text-white py-3 xl:px-4 rounded-md cursor-pointer w-full"
+                        : "flex justify-center xl:justify-start items-center gap-2 text-[#385A65] py-3 xl:px-4 border-0 cursor-pointer w-full"
                     }
                     to={"/rfid"}
                   >
