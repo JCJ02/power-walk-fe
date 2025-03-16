@@ -224,10 +224,10 @@ const GenerateReportsPDF = ({
                       })}
                     </Text>
                     <Text style={styles.tableCell}>
-                      {item.totalElectricityGeneratedToday}
+                      {item.totalElectricityGeneratedToday.toFixed(2)}
                     </Text>
                     <Text style={styles.tableCell}>
-                      {item.totalElectricityConsumptionToday}
+                      {item.totalElectricityConsumptionToday.toFixed(2)}
                     </Text>
                   </View>
                 ))}
