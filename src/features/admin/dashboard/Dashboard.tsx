@@ -22,11 +22,20 @@ import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from "rec
 import useDailyUsage from "./hooks/useDailyUsage";
 import useFetchBattery from "./hooks/useFetchBattery";
 import useElectricityMeter from "./hooks/useElectricityMeter";
+import { Input } from "../../../components/ui/input";
 
 const Dashboard = () => {
   const UseQueryClient = useQueryClient();
 
   const [batterySize, setBatterySize] = useState(144);
+  // const [fromDate, setFromDate] = useState<string>(
+  //   new Date().toISOString().split("T")[0]
+  // );
+  // const [toDate, setToDate] = useState<string>(
+  //   new Date().toISOString().split("T")[0]
+  // );
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   const handleRefreshButton = () => {
     UseQueryClient.invalidateQueries({ queryKey: ["battery-percentage"] });
@@ -54,7 +63,7 @@ const Dashboard = () => {
   } = useFetchElectricityConsumption();
 
   const { historyData, historyLoading, isHistoryError, historyError } =
-    useDailyUsage();
+    useDailyUsage(fromDate, toDate);
 
   const { electricityMeterData, electricityMeterLoading, isElectricityMeterError, electricityMeterError } = useElectricityMeter();
 
@@ -204,11 +213,35 @@ const Dashboard = () => {
         <div className="flex flex-col lg:flex-row items-center gap-4 w-full">
           {/* DAILY USAGE - NUMBER OF STUDENTS PER DAY */}
           <Card className="w-full lg:w-1/2">
-            <CardHeader>
-              <CardTitle className="text-[#385A65]">Daily Usage</CardTitle>
-              <CardDescription className="text-justify">
-                The number of students who used the Charging Station per day.
-              </CardDescription>
+            <CardHeader className="flex flex-row justify-between items-start gap-24">
+              <div>
+                <CardTitle className="text-[#385A65]">Daily Usage</CardTitle>
+                <CardDescription className="text-justify">
+                  The number of students who used the Charging Station per day.
+                </CardDescription>
+              </div>
+
+              {/* DATE FILTERS */}
+              <div className="flex gap-1">
+                <label className="text-xs">
+                  From:
+                  <Input
+                    type="date"
+                    value={fromDate}
+                    onChange={(event) => setFromDate(event.target.value)}
+                    className="text-xs md:text-xs lg:text-xs border p-1 rounded"
+                  />
+                </label>
+                <label className="text-xs">
+                  To:
+                  <Input
+                    type="date"
+                    value={toDate}
+                    onChange={(event) => setToDate(event.target.value)}
+                    className="text-xs md:text-xs lg:text-xs border p-1 rounded"
+                  />
+                </label>
+              </div>
             </CardHeader>
             <CardContent>
               {historyLoading ? (

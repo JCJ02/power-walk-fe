@@ -4,10 +4,16 @@ import baseUrl from "../../../../utils/baseUrl";
 import { HistoryResponse } from "../../../../types/RFIDType";
 
 
-const useDailyUsage = () => {
+const useDailyUsage = (fromDate?: string, toDate?: string) => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     if (!token) navigate("/log-in");
+
+    // CONSTRUCT THE QUERY STRING DYNAMICALLY
+    const queryParams = [];
+    if (fromDate) queryParams.push(`from=${fromDate}`);
+    if (toDate) queryParams.push(`to=${toDate}`);
+    const queryString = queryParams.length ? `?${queryParams.join("&")}` : "";
 
     const {
         data: historyData,
@@ -16,7 +22,7 @@ const useDailyUsage = () => {
         error: historyError
     } = useFetch<HistoryResponse>(
         "daily-usage",
-        `${baseUrl}api/rfid/history`,
+        `${baseUrl}api/rfid/history${queryString}`,
     );
 
     // ENSURE DATA IS FORMATTED CORRECTLY FOR THE CHART
