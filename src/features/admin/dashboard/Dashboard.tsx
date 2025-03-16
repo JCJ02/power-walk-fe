@@ -24,6 +24,7 @@ import useFetchBattery from "./hooks/useFetchBattery";
 import useElectricityMeter from "./hooks/useElectricityMeter";
 import { pdf } from "@react-pdf/renderer";
 import GenerateReportsPDF from "./components/GenerateReportsPDF";
+import html2canvas from "html2canvas";
 
 const Dashboard = () => {
   const UseQueryClient = useQueryClient();
@@ -66,10 +67,34 @@ const Dashboard = () => {
 
   const handleGenerateReportsPDF = async () => {
     try {
+      let chart1Image = null;
+      let chart2Image = null;
+
+      // Step 1: Capture Chart 1 as an image
+      const chart1Element = document.getElementById("daily-usage-chart");
+      if (chart1Element) {
+        const chart1Canvas = await html2canvas(chart1Element);
+        chart1Image = chart1Canvas.toDataURL("image/png");
+      } else {
+        console.warn("Chart 1 element not found. Skipping...");
+      }
+
+      // Step 2: Capture Chart 2 as an image
+      const chart2Element = document.getElementById("electricity-meter-chart");
+      if (chart2Element) {
+        const chart2Canvas = await html2canvas(chart2Element);
+        chart2Image = chart2Canvas.toDataURL("image/png");
+      } else {
+        console.warn("Chart 2 element not found. Skipping...");
+      }
+
       const blob = await pdf(
         <GenerateReportsPDF
           dailyUsageData={historyData} // DATA FOR CHART 1 (DAILY USAGE)
+          totalRFIDUID={totalRFIDUID}
           electricityMeterData={electricityMeterData} // DATA FOR CHART 2 (ELECTRICITY METER)
+          totalElectricityGenerated={totalElectricityGenerated}
+          totalElectricityConsumption={totalElectricityConsumption}
           isLoading={historyLoading || electricityMeterLoading} // LOADING STATE
           isError={isHistoryError || isElectricityMeterError} // ERROR STATE
           error={historyError || electricityMeterError} // ERROR MESSAGE
@@ -78,6 +103,8 @@ const Dashboard = () => {
             day: "numeric",
             year: "numeric",
           })} // CURRENT DATE
+          chart1Image={chart1Image} // Pass Chart 1 image URL
+          chart2Image={chart2Image} // Pass Chart 2 image URL
         />
       ).toBlob();
       // const link = document.createElement("a");
@@ -282,60 +309,62 @@ const Dashboard = () => {
                     }`}
                 </p>
               ) : historyData?.length > 0 ? (
-                <ChartContainer config={chartConfig} className="h-[240px] w-full">
-                  <LineChart
-                    data={historyData}
-                  // margin={{ left: -24, right: 12 }}
-                  >
-                    <CartesianGrid vertical={false} />
-                    <XAxis
-                      className="pr-3"
-                      // dataKey="date_added"
-                      dataKey="createdAt"
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={8}
-                      tickFormatter={(value) => {
-                        const date = new Date(value);
-                        return date.toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          // year: "numeric",
-                        });
-                      }}
-                    />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      domain={[0, "auto"]}
-                      allowDecimals={false}
-                      tickCount={5}
-                      tickFormatter={(value) => `${Math.round(value)}`}
-                      label={{
-                        value: "No. of Students",
-                        angle: -90,
-                        position: "insideLeft",
-                        style: {
-                          textAnchor: "middle",
-                          fill: "var(--chart-label)",
-                          fontSize: 12,
-                        },
-                      }}
-                    />
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
-                    <Line
-                      dataKey="rfid_uid"
-                      // dataKey="uid2"
-                      type="linear"
-                      stroke="#385A65"
-                      strokeWidth={2}
-                      dot={true}
-                    />
-                  </LineChart>
-                </ChartContainer>
+                <div id="daily-usage-chart">
+                  <ChartContainer config={chartConfig} className="h-[240px] w-full">
+                    <LineChart
+                      data={historyData}
+                    // margin={{ left: -24, right: 12 }}
+                    >
+                      <CartesianGrid vertical={false} />
+                      <XAxis
+                        className="pr-3"
+                        // dataKey="date_added"
+                        dataKey="createdAt"
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={8}
+                        tickFormatter={(value) => {
+                          const date = new Date(value);
+                          return date.toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            // year: "numeric",
+                          });
+                        }}
+                      />
+                      <YAxis
+                        axisLine={false}
+                        tickLine={false}
+                        domain={[0, "auto"]}
+                        allowDecimals={false}
+                        tickCount={5}
+                        tickFormatter={(value) => `${Math.round(value)}`}
+                        label={{
+                          value: "No. of Students",
+                          angle: -90,
+                          position: "insideLeft",
+                          style: {
+                            textAnchor: "middle",
+                            fill: "var(--chart-label)",
+                            fontSize: 12,
+                          },
+                        }}
+                      />
+                      <ChartTooltip
+                        cursor={false}
+                        content={<ChartTooltipContent hideLabel />}
+                      />
+                      <Line
+                        dataKey="rfid_uid"
+                        // dataKey="uid2"
+                        type="linear"
+                        stroke="#385A65"
+                        strokeWidth={2}
+                        dot={true}
+                      />
+                    </LineChart>
+                  </ChartContainer>
+                </div>
               ) : (
                 <p className="text-gray-500">
                   No Data Available for Daily Usage.
@@ -392,55 +421,57 @@ const Dashboard = () => {
                     }`}
                 </p>
               ) : electricityMeterData?.length > 0 ? (
-                <ChartContainer config={barChartConfig} className="h-[250px] w-full">
-                  <BarChart
-                    accessibilityLayer
-                    data={electricityMeterData}
-                  // margin={{ left: -24, right: 12 }}
-                  >
-                    <CartesianGrid vertical={false} />
-                    <XAxis
-                      className="pr-3"
-                      // dataKey="date_added"
-                      dataKey="date"
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={8}
-                      tickFormatter={(value) => {
-                        const date = new Date(value);
-                        return date.toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          // year: "numeric",
-                        });
-                      }}
-                    />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      domain={[0, "auto"]}
-                      allowDecimals={false}
-                      tickCount={5}
-                      tickFormatter={(value) => `${Math.round(value)}`}
-                      label={{
-                        value: "Electricity Generated & Consumption",
-                        angle: -90,
-                        position: "insideLeft",
-                        style: {
-                          textAnchor: "middle",
-                          fill: "var(--chart-label)",
-                          fontSize: 12,
-                        },
-                      }}
-                    />
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
-                    <Bar dataKey="totalElectricityGeneratedToday" fill="#385A65" radius={4} />
-                    <Bar dataKey="totalElectricityConsumptionToday" fill="#FFE95F" radius={4} />
-                  </BarChart>
-                </ChartContainer>
+                <div id="electricity-meter-chart">
+                  <ChartContainer config={barChartConfig} className="h-[250px] w-full">
+                    <BarChart
+                      accessibilityLayer
+                      data={electricityMeterData}
+                    // margin={{ left: -24, right: 12 }}
+                    >
+                      <CartesianGrid vertical={false} />
+                      <XAxis
+                        className="pr-3"
+                        // dataKey="date_added"
+                        dataKey="date"
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={8}
+                        tickFormatter={(value) => {
+                          const date = new Date(value);
+                          return date.toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            // year: "numeric",
+                          });
+                        }}
+                      />
+                      <YAxis
+                        axisLine={false}
+                        tickLine={false}
+                        domain={[0, "auto"]}
+                        allowDecimals={false}
+                        tickCount={5}
+                        tickFormatter={(value) => `${Math.round(value)}`}
+                        label={{
+                          value: "Electricity Generated & Consumption",
+                          angle: -90,
+                          position: "insideLeft",
+                          style: {
+                            textAnchor: "middle",
+                            fill: "var(--chart-label)",
+                            fontSize: 12,
+                          },
+                        }}
+                      />
+                      <ChartTooltip
+                        cursor={false}
+                        content={<ChartTooltipContent hideLabel />}
+                      />
+                      <Bar dataKey="totalElectricityGeneratedToday" fill="#385A65" radius={4} />
+                      <Bar dataKey="totalElectricityConsumptionToday" fill="#FFE95F" radius={4} />
+                    </BarChart>
+                  </ChartContainer>
+                </div>
               ) : (
                 <p className="text-gray-500">
                   No Data Available for Electricity Meter
