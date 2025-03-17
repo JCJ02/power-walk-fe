@@ -150,36 +150,13 @@ const NewRFIDForm = ({ closeForm }: NewRFIDProps) => {
         },
         onError: () => {
           setErrorMessage("UID already Exist!");
-          setInterval(() => {
+          setTimeout(() => {
             closeForm();
-          }, 3000);
+          }, 1500);
         },
       });
     }
   };
-
-  // useEffect(() => {
-  //   document.title = "RFID Registration - Power Walk Technology";
-
-  //   if (rfidInputRef.current) {
-  //     rfidInputRef.current.focus();
-  //   }
-
-  //   // 🔥 Listen for RFID data from the backend
-  //   socket.on("rfidData", (rfidUID: string) => {
-  //     const cleanedUID = rfidUID.replace(/\s+/g, ""); // Remove spaces
-  //     console.log("Scanned RFID UID:", cleanedUID);
-  //     setValues((previous) => ({ ...previous, uid: cleanedUID }));
-
-  //     if (rfidInputRef.current) {
-  //       rfidInputRef.current.focus();
-  //     }
-  //   });
-
-  //   return () => {
-  //     socket.off("rfidData");
-  //   };
-  // }, [setValues]);
 
   useEffect(() => {
     document.title = "RFID Registration - Power Walk Technology";
@@ -188,9 +165,9 @@ const NewRFIDForm = ({ closeForm }: NewRFIDProps) => {
       rfidInputRef.current.focus();
     }
 
-    // 🔥 Listen for RFID data from the backend
+    // LISTEN FOR RFID DATA FROM THE BACKEND
     socket.on("rfidData", (rfidUID: string) => {
-      const cleanedUID = rfidUID.replace(/\s+/g, ""); // Remove spaces
+      const cleanedUID = rfidUID.replace(/\s+/g, ""); // REMOVE SPACES
       console.log("Scanned RFID UID:", cleanedUID);
       setValues((previous) => ({ ...previous, uid: cleanedUID }));
 
@@ -199,16 +176,16 @@ const NewRFIDForm = ({ closeForm }: NewRFIDProps) => {
       }
     });
 
-    // 🕒 Automatically submit form every 1 second if a UID is scanned
+    // AUTOMATICALLY SUBMIT FORM EVERY 1 SECOND IF A UID IS SCANNED
     const interval = setInterval(() => {
       if (values.uid) {
-        handleSubmit(); // Call handleSubmit automatically
+        handleSubmit(); // CALL handleSubmit AUTOMATICALLY
       }
-    }, 1000); // Runs every 1 second
+    }, 1000); // RUNS EVERY 1 SECOND
 
     return () => {
       socket.off("rfidData");
-      clearInterval(interval); // Cleanup interval on component unmount
+      clearInterval(interval); // CLEANUP INTERVAL ON COMPONENT UNMOUNT
     };
   }, [setValues, values.uid]);
 
