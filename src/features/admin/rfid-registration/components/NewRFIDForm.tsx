@@ -140,23 +140,23 @@ const NewRFIDForm = ({ closeForm }: NewRFIDProps) => {
   const rfidInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = () =>
-    // event: React.FormEvent
-    {
-      // event.preventDefault();
-      if (validateForm()) {
-        createRFIDMutation.mutate(values, {
-          onSuccess: () => {
+  // event: React.FormEvent
+  {
+    // event.preventDefault();
+    if (validateForm()) {
+      createRFIDMutation.mutate(values, {
+        onSuccess: () => {
+          closeForm();
+        },
+        onError: () => {
+          setErrorMessage("UID already Exist!");
+          setInterval(() => {
             closeForm();
-          },
-          onError: () => {
-            setErrorMessage("UID is already Exist!");
-            setInterval(() => {
-              closeForm();
-            }, 3000);
-          },
-        });
-      }
-    };
+          }, 3000);
+        },
+      });
+    }
+  };
 
   // useEffect(() => {
   //   document.title = "RFID Registration - Power Walk Technology";
